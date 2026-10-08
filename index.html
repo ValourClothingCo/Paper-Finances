@@ -24,15 +24,16 @@
             
             /* Glass Refraction */
             --glass-bg: rgba(255, 255, 255, 0.4);
-            --glass-card-bg: rgba(255, 255, 255, 0.7);
-            --glass-nav-bg: rgba(255, 255, 255, 0.85);
+            --glass-card-bg: rgba(255, 255, 255, 0.65);
+            --glass-nav-bg: rgba(255, 255, 255, 0.8);
             --glass-border: 1px solid rgba(255, 255, 255, 0.9);
             --glass-highlight: inset 1px 1px 1px rgba(255, 255, 255, 0.9);
             --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
             --glass-blur: 40px;
             
-            /* Valour Coin Opacity */
-            --coin-opacity: 0.15;
+            /* Hyper-Realistic Chrome Objects (Light) */
+            --chrome-grad-main: radial-gradient(circle at 35% 25%, #ffffff 0%, #cbd5e1 15%, #64748b 45%, #94a3b8 70%, #f1f5f9 100%);
+            --chrome-shadow-main: inset -20px -20px 40px rgba(15,23,42,0.3), inset 15px 15px 30px rgba(255,255,255,1), 0 30px 60px rgba(0,0,0,0.15);
             
             --sec-1: #0ea5e9;
             --sec-1-hover: #0284c7;
@@ -40,8 +41,8 @@
             --danger: #ef4444;
             --warning: #f59e0b;
             
-            /* Charts */
-            --chart-line: #000000; /* Black line in light theme */
+            /* Charts (Monochrome Switching) */
+            --chart-line: #000000; 
             --chart-fill: rgba(0, 0, 0, 0.05);
             --chart-grid: rgba(0, 0, 0, 0.05);
             --chart-text: #475569;
@@ -67,8 +68,9 @@
                 --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
                 --glass-blur: 48px;
                 
-                /* Valour Coin Opacity */
-                --coin-opacity: 0.4;
+                /* Hyper-Realistic Dark Mercury / Liquid Metal */
+                --chrome-grad-main: radial-gradient(circle at 28% 28%, #ffffff 0%, #a3a3a3 6%, #1a1a1a 28%, #000000 65%, #2a2a2a 100%);
+                --chrome-shadow-main: inset -20px -20px 50px #000000, inset 12px 12px 35px rgba(255,255,255,0.7), inset -4px 4px 15px rgba(255,255,255,0.2), 0 40px 80px rgba(0,0,0,1);
                 
                 --sec-1: #38bdf8;
                 --sec-1-hover: #0ea5e9;
@@ -76,8 +78,8 @@
                 --danger: #f87171;
                 --warning: #fbbf24;
                 
-                /* Charts */
-                --chart-line: #ffffff; /* White line in dark theme */
+                /* Charts (Monochrome Switching) */
+                --chart-line: #ffffff; 
                 --chart-fill: rgba(255, 255, 255, 0.08);
                 --chart-grid: rgba(255, 255, 255, 0.05);
                 --chart-text: #94a3b8;
@@ -97,39 +99,41 @@
         /* Premium sleek icons globally */
         .lucide { stroke-width: 1.5px; }
 
-        /* --- VALOUR COIN BACKGROUND ENGINE --- */
-        .motion-bg {
+        /* --- HYPER-REALISTIC LIQUID METAL DROPS ENGINE --- */
+        .chrome-canvas-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
             background: var(--bg-base); overflow: hidden; pointer-events: none;
             transform: translateZ(0);
         }
 
-        .valour-coin {
+        .chrome-drop {
             position: absolute;
-            opacity: var(--coin-opacity);
-            will-change: transform, opacity;
+            background: var(--chrome-grad-main);
+            box-shadow: var(--chrome-shadow-main);
+            will-change: transform, border-radius, opacity;
             transition: opacity 0.8s ease-in-out;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
-            user-select: none; pointer-events: none;
+            animation: morphDrop 10s ease-in-out infinite alternate;
         }
 
-        body.animations-paused .valour-coin {
-            opacity: 0 !important;
-            animation-play-state: paused !important;
+        body.animations-paused .chrome-drop { opacity: 0 !important; animation-play-state: paused !important; }
+
+        /* Randomly Scattered Liquid Metal Blobs */
+        .drop-1 { width: 320px; height: 320px; top: 5%; left: 10%; animation: morphDrop 12s ease-in-out infinite alternate, floatA 24s linear infinite; }
+        .drop-2 { width: 180px; height: 180px; top: 25%; right: 15%; animation: morphDrop 9s ease-in-out infinite alternate-reverse, floatB 18s linear infinite; }
+        .drop-3 { width: 450px; height: 450px; bottom: -10%; left: -5%; animation: morphDrop 15s ease-in-out infinite alternate, floatC 30s linear infinite; }
+        .drop-4 { width: 120px; height: 120px; top: 45%; left: 35%; animation: morphDrop 8s ease-in-out infinite alternate-reverse, floatD 15s linear infinite; }
+        .drop-5 { width: 280px; height: 280px; bottom: 15%; right: -5%; animation: morphDrop 11s ease-in-out infinite alternate, floatA 22s linear infinite reverse; }
+
+        @keyframes morphDrop {
+            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; }
+            100% { border-radius: 30% 70% 50% 50% / 60% 40% 70% 30%; }
         }
 
-        /* 5 Subtle Valour Coins Floating */
-        .coin-1 { width: 450px; top: -5%; left: -5%; animation: floatCoin1 25s ease-in-out infinite alternate; }
-        .coin-2 { width: 350px; bottom: -10%; right: -5%; animation: floatCoin2 30s ease-in-out infinite alternate-reverse; }
-        .coin-3 { width: 220px; top: 40%; left: 40%; animation: floatCoin3 22s ease-in-out infinite alternate; }
-        .coin-4 { width: 180px; top: 15%; right: 25%; animation: floatCoin4 18s ease-in-out infinite alternate-reverse; }
-        .coin-5 { width: 280px; bottom: 20%; left: 10%; animation: floatCoin5 28s ease-in-out infinite alternate; }
-
-        @keyframes floatCoin1 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(8vw, 10vh, 0) rotate(35deg); } }
-        @keyframes floatCoin2 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(-10vw, -12vh, 0) rotate(-25deg); } }
-        @keyframes floatCoin3 { 0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); } 100% { transform: translate3d(-6vw, 15vh, 0) scale(1.15) rotate(15deg); } }
-        @keyframes floatCoin4 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(12vw, 5vh, 0) rotate(-40deg); } }
-        @keyframes floatCoin5 { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(-5vw, -15vh, 0) scale(1.1); } }
+        @keyframes floatA { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 50% { transform: translate3d(8vw, 12vh, 0) rotate(45deg); } 100% { transform: translate3d(-5vw, 5vh, 0) rotate(90deg); } }
+        @keyframes floatB { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 50% { transform: translate3d(-10vw, -8vh, 0) rotate(-45deg); } 100% { transform: translate3d(5vw, -15vh, 0) rotate(-90deg); } }
+        @keyframes floatC { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(5vw, -5vh, 0) scale(1.1); } 100% { transform: translate3d(-8vw, 10vh, 0) scale(0.9); } }
+        @keyframes floatD { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-6vw, 6vh, 0) scale(0.85); } 100% { transform: translate3d(12vw, -12vh, 0) scale(1.15); } }
 
         /* --- LIQUID GLASS CONTAINERS --- */
         .glass {
@@ -221,7 +225,7 @@
         .chart-container h4 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; margin-bottom: 15px; color: var(--text-main); font-size: 20px;}
         .chart-wrapper { position: relative; width: 100%; height: 240px; }
 
-        /* --- SLEEK HORIZONTAL FINTECH CARD CAROUSEL (FIXED OVERFLOW) --- */
+        /* --- SLEEK HORIZONTAL FINTECH CARD CAROUSEL --- */
         .card-carousel {
             display: flex; gap: 16px; overflow-x: auto; padding: 6px 4px 24px 4px;
             scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
@@ -244,15 +248,14 @@
             pointer-events: none; transform: rotate(20deg);
         }
 
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; overflow: hidden; }
         .card-brand-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; line-height: 1.1; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 4px; display: block; }
+        .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 4px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-chip { width: 34px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #d4af37 0%, #f9e8a2 50%, #aa820a 100%); border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.8); position: relative; flex-shrink:0; margin-left: 10px; }
         
         .card-balance { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; line-height: 1.1; margin-top: 4px; z-index: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
         .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; margin-top: auto; padding-top: 10px; width: 100%; }
-        .card-details-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
         .card-number { font-family: 'Inter', monospace; font-size: 12px; font-weight: 600; opacity: 0.9; letter-spacing: 1px; white-space: nowrap; }
         .card-network-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; text-transform: uppercase; flex-shrink:0; margin-left: auto; text-align: right; }
 
@@ -367,17 +370,16 @@
 </head>
 <body>
 
-    <!-- Hyper-Realistic 3D Valour Coin Engine -->
+    <!-- Hyper-Realistic 3D Liquid Chrome Engine -->
     <div class="chrome-canvas-wrapper">
-        <!-- Replaced abstract chrome with drifting Valour Coins based on the provided reference -->
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-1" alt="">
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-2" alt="">
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-3" alt="">
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-4" alt="">
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-5" alt="">
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-6" alt="">
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-7" alt="">
-        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-8" alt="">
+        <div class="chrome-drop drop-1"></div>
+        <div class="chrome-drop drop-2"></div>
+        <div class="chrome-drop drop-3"></div>
+        <div class="chrome-drop drop-4"></div>
+        <div class="chrome-drop drop-5"></div>
+        <div class="chrome-drop drop-6"></div>
+        <div class="chrome-drop drop-7"></div>
+        <div class="chrome-drop drop-8"></div>
     </div>
 
     <!-- Morphing Nav Structure -->
@@ -451,7 +453,7 @@
                 <div class="section-header-wrap">
                     <h2 class="section-header">Investments</h2>
                     <div style="display:flex; gap:10px;">
-                        <button class="btn-small" onclick="openModal('snapshotModal')"><i data-lucide="activity"></i> Log Snapshot</button>
+                        <button class="btn-small" onclick="syncLivePrices()" id="btn-sync-live"><i data-lucide="refresh-cw"></i> Sync Live</button>
                         <button class="btn-small" onclick="openModal('investModal')"><i data-lucide="plus"></i> Add Holding</button>
                     </div>
                 </div>
@@ -634,35 +636,26 @@
                     <input type="color" id="invColor" class="form-control" value="#222222">
                 </div>
 
-                <div class="form-group"><label><i data-lucide="hash"></i> Ticker / Asset Name</label><input type="text" id="invName" class="form-control" placeholder="e.g. ASHOKLEY, BEL" required></div>
-                <div class="form-group"><label><i data-lucide="hash"></i> Folio / Account No</label><input type="text" id="invNumber" class="form-control" placeholder="Optional"></div>
+                <div class="form-group"><label><i data-lucide="hash"></i> Asset / Fund Name</label><input type="text" id="invName" class="form-control" placeholder="e.g. NIFTYBEES, HDFC Index" required></div>
+                <div class="form-group">
+                    <label><i data-lucide="line-chart"></i> Ticker Symbol (For Live Sync)</label>
+                    <input type="text" id="invTicker" class="form-control" placeholder="e.g. RELIANCE.NS, AAPL">
+                    <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;">Use Yahoo Finance symbols. Add .NS for Indian stocks.</small>
+                </div>
                 
-                <div class="form-group"><label><i data-lucide="arrow-down-to-line"></i> Invested Capital</label><input type="number" step="0.01" id="invInvested" class="form-control" placeholder="0.00" required></div>
-                <div class="form-group"><label><i data-lucide="indian-rupee"></i> Current Market Value</label><input type="number" step="0.01" id="invBalance" class="form-control" placeholder="0.00" required></div>
+                <div style="display:flex; gap:10px;">
+                    <div class="form-group" style="flex:1;"><label><i data-lucide="layers"></i> Quantity</label><input type="number" step="any" id="invQty" class="form-control" placeholder="0" required></div>
+                    <div class="form-group" style="flex:1;"><label><i data-lucide="indian-rupee"></i> Avg Buy Price</label><input type="number" step="0.01" id="invPrice" class="form-control" placeholder="0.00" required></div>
+                </div>
+
+                <div class="form-group"><label><i data-lucide="hash"></i> Folio / Account No</label><input type="text" id="invNumber" class="form-control" placeholder="Optional"></div>
                 <div class="form-group"><label><i data-lucide="calendar"></i> Date Logged</label><input type="date" id="invDate" class="form-control" required></div>
                 <button type="submit" class="btn-primary" id="invSubmitBtn"><i data-lucide="save"></i> Save Holding</button>
             </form>
         </div>
     </div>
 
-    <!-- 4. Snapshot Modal -->
-    <div class="modal-overlay" id="snapshotModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Log Valuation</h3>
-                <button class="close-btn" onclick="closeModal('snapshotModal')"><i data-lucide="x"></i></button>
-            </div>
-            <form id="snapshotForm">
-                <div class="form-group"><label><i data-lucide="folder"></i> Select Holding</label><select id="snapHoldingId" class="form-control" required></select></div>
-                <div class="form-group"><label><i data-lucide="calendar"></i> Date</label><input type="date" id="snapDate" class="form-control" required></div>
-                <div class="form-group"><label><i data-lucide="indian-rupee"></i> New Market Value</label><input type="number" step="0.01" id="snapValue" class="form-control" placeholder="0.00" required></div>
-                <div class="form-group"><label><i data-lucide="arrow-down-to-line"></i> Updated Invested Capital (Optional)</label><input type="number" step="0.01" id="snapInvested" class="form-control" placeholder="Leave empty if unchanged"></div>
-                <button type="submit" class="btn-primary"><i data-lucide="activity"></i> Record Snapshot</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 5. Contract Modal -->
+    <!-- 4. Contract Modal (Loans & FDs - Upgraded to specific Fields) -->
     <div class="modal-overlay" id="contractModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -699,18 +692,19 @@
                 <div class="form-group"><label><i data-lucide="building-2"></i> Provider / Bank Name</label><input type="text" id="cntName" class="form-control" placeholder="e.g. SBI Home Loan, HDFC FD" required></div>
                 <div class="form-group"><label><i data-lucide="hash"></i> Loan / FD Number</label><input type="text" id="cntNumber" class="form-control" placeholder="e.g. 54321098" required></div>
                 
-                <div class="form-group"><label><i data-lucide="indian-rupee"></i> Principal Amount</label><input type="number" step="0.01" id="cntBalance" class="form-control" placeholder="0.00" required></div>
-                <div class="form-group"><label><i data-lucide="percent"></i> Interest Rate (% p.a.)</label><input type="number" step="0.01" id="cntRate" class="form-control" placeholder="e.g. 8.5" required></div>
+                <div class="form-group"><label><i data-lucide="arrow-down-to-line"></i> Amount Deposited / Principal</label><input type="number" step="0.01" id="cntPrincipal" class="form-control" placeholder="0.00" required></div>
+                <div class="form-group"><label><i data-lucide="indian-rupee"></i> Current Amount / Balance</label><input type="number" step="0.01" id="cntBalance" class="form-control" placeholder="0.00" required></div>
+                
                 <div style="display:flex; gap:10px;">
-                    <div class="form-group" style="flex:1;"><label><i data-lucide="calendar-check"></i> Start Date</label><input type="date" id="cntDate" class="form-control" required></div>
-                    <div class="form-group" style="flex:1;"><label><i data-lucide="clock"></i> Duration (Mos)</label><input type="number" id="cntDuration" class="form-control" placeholder="e.g. 36" required></div>
+                    <div class="form-group" style="flex:1;"><label><i data-lucide="activity"></i> Maturity Amount</label><input type="number" step="0.01" id="cntMaturity" class="form-control" placeholder="0.00" required></div>
+                    <div class="form-group" style="flex:1;"><label><i data-lucide="calendar-check"></i> Maturity Date</label><input type="date" id="cntMaturityDate" class="form-control" required></div>
                 </div>
                 <button type="submit" class="btn-primary" id="cntSubmitBtn"><i data-lucide="save"></i> Save Contract</button>
             </form>
         </div>
     </div>
 
-    <!-- 6. Category Modal -->
+    <!-- 5. Category Modal -->
     <div class="modal-overlay" id="catModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -731,7 +725,7 @@
         </div>
     </div>
 
-    <!-- 7. Goal Modal -->
+    <!-- 6. Goal Modal -->
     <div class="modal-overlay" id="goalModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -766,7 +760,7 @@
                 const s = name.toLowerCase();
                 let match = null;
 
-                if (brandSelection === "custom" && customColor) {
+                if (brandSelection === "custom" && customColor && customColor !== "#000000") {
                     match = { gradient: `linear-gradient(135deg, ${customColor} 0%, #111111 100%)`, textColor: "#ffffff", brand: name.toUpperCase() };
                 } else if (brandSelection !== "auto" && this.library[brandSelection]) {
                     match = { ...this.library[brandSelection], brand: name.toUpperCase() || this.library[brandSelection].brand };
@@ -781,6 +775,7 @@
                     }
                 }
 
+                // Strict Network Association based on Type
                 let network = "ASSET";
                 if (type === "liability_cc") {
                     network = s.includes("amex") ? "AMEX" : (s.includes("rupay") ? "RUPAY" : (s.includes("master") || s.includes("amazon") ? "MASTERCARD" : "VISA"));
@@ -839,7 +834,7 @@
         }
 
         function loadData() {
-            const stored = localStorage.getItem('aazam_finance_apk_v18');
+            const stored = localStorage.getItem('aazam_finance_apk_v19');
             if (stored) { 
                 state = JSON.parse(stored); 
                 if(state.settings === undefined) state.settings = { animations: true };
@@ -849,9 +844,9 @@
                 state.profiles.personal.categories = [{ id: 'c1', name: 'Salary', type: 'income', limit: 0 }, { id: 'c4', name: 'Food & Dining', type: 'expense', limit: 15000 }, { id: 'c5', name: 'Sneakers & Drip', type: 'expense', limit: 25000 }];
                 state.profiles.personal.accounts = [
                     { id: 'a1', name: 'HDFC Checking', type: 'asset_bank', balance: 150000, accNumber: '1098' }, 
-                    { id: 'a2', name: 'Amazon Pay Credit Card', type: 'liability_cc', balance: 1968, accNumber: '3009', expiry: '01/29', cvv: '***' },
-                    { id: 'a3', name: 'ASHOKLEY', type: 'asset_invest_stock', balance: 5072, investedAmount: 5224, history: [{ date: '2026-01-10', value: 5224, invested: 5224 }, { date: today, value: 5072, invested: 5224 }] },
-                    { id: 'a4', name: 'BEL', type: 'asset_invest_stock', balance: 4917, investedAmount: 5036, history: [{ date: '2026-02-15', value: 5036, invested: 5036 }, { date: today, value: 4917, invested: 5036 }] }
+                    { id: 'a2', name: 'Amazon Pay', type: 'liability_cc', balance: 1968, accNumber: '3009', expiry: '01/29', cvv: '***' },
+                    { id: 'a3', name: 'ASHOKLEY', ticker: 'ASHOKLEY.NS', type: 'asset_invest_stock', qty: 100, avgPrice: 52.24, balance: 5072, investedAmount: 5224, history: [{ date: '2026-01-10', value: 5224, invested: 5224 }, { date: today, value: 5072, invested: 5224 }] },
+                    { id: 'a4', name: 'BEL', ticker: 'BEL.NS', type: 'asset_invest_stock', qty: 50, avgPrice: 100.72, balance: 4917, investedAmount: 5036, history: [{ date: '2026-02-15', value: 5036, invested: 5036 }, { date: today, value: 4917, invested: 5036 }] }
                 ];
                 state.profiles.business.categories = [{ id: 'bc1', name: 'Valour Revenue', type: 'income', limit: 0 }, { id: 'bc3', name: 'Meta Ads', type: 'expense', limit: 40000 }];
                 state.profiles.business.accounts = [{ id: 'ba1', name: 'HDFC Business Checking', type: 'asset_bank', balance: 250000 }];
@@ -859,7 +854,7 @@
             saveData();
             applyAnimationState();
         }
-        function saveData() { localStorage.setItem('aazam_finance_apk_v18', JSON.stringify(state)); }
+        function saveData() { localStorage.setItem('aazam_finance_apk_v19', JSON.stringify(state)); }
 
         function toggleAnimation() {
             state.settings.animations = !state.settings.animations;
@@ -883,6 +878,47 @@
             state.activeProfile = profile;
             document.getElementById('btn-personal').classList.toggle('active', profile === 'personal'); document.getElementById('btn-business').classList.toggle('active', profile === 'business');
             saveData(); renderAll(); triggerProfileAnimation();
+        }
+
+        // --- LIVE MARKET SYNC ENGINE ---
+        async function syncLivePrices() {
+            const btn = document.getElementById('btn-sync-live');
+            if(btn) btn.innerHTML = '<i data-lucide="loader"></i> Syncing...';
+            
+            let updated = false;
+            for (let i = 0; i < db().accounts.length; i++) {
+                let acc = db().accounts[i];
+                if (acc.type.startsWith('asset_invest') && acc.ticker) {
+                    try {
+                        const target = encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${acc.ticker}`);
+                        const response = await fetch(`https://api.allorigins.win/get?url=${target}`);
+                        if (!response.ok) throw new Error('Network fail');
+                        const data = await response.json();
+                        const chartData = JSON.parse(data.contents);
+                        const livePrice = chartData.chart.result[0].meta.regularMarketPrice;
+                        
+                        if (livePrice && !isNaN(livePrice)) {
+                            acc.livePrice = livePrice;
+                            acc.balance = acc.qty * livePrice; // New Value
+                            
+                            const today = new Date().toISOString().slice(0,10);
+                            if (!acc.history) acc.history = [];
+                            if (acc.history.length > 0 && acc.history[acc.history.length-1].date === today) {
+                                acc.history[acc.history.length-1].value = acc.balance;
+                            } else {
+                                acc.history.push({ date: today, value: acc.balance, invested: acc.investedAmount });
+                            }
+                            updated = true;
+                        }
+                    } catch (err) { console.error("Fetch failed: " + acc.ticker, err); }
+                }
+            }
+            
+            if (updated) { saveData(); renderAll(); } 
+            else { alert("Sync finished. Please ensure you provided valid Yahoo Finance Tickers (e.g. RELIANCE.NS)"); }
+            
+            if(btn) btn.innerHTML = '<i data-lucide="refresh-cw"></i> Sync Live';
+            lucide.createIcons();
         }
 
         // --- AI Strategy Engine ---
@@ -1008,7 +1044,6 @@
                 el.style.background = brand.gradient; el.style.color = brand.textColor;
                 el.innerHTML = `
                     <div class="card-action-bar">
-                        <button class="card-action-btn log" onclick="openSnapshotFor('${acc.id}')" title="Log Value"><i data-lucide="activity"></i></button>
                         <button class="card-action-btn edit" onclick="editEntity('invest', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
                         <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
@@ -1025,7 +1060,7 @@
                     </div>
                     <div class="card-bottom">
                         <div style="display:flex; gap:12px; align-items:center; flex:1; overflow:hidden;">
-                            <div class="card-number">${mask}</div>
+                            ${acc.qty ? `<div class="card-number">QTY: ${acc.qty}</div><div class="card-number">AVG: ${formatter.format(acc.avgPrice)}</div>` : `<div class="card-number">${mask}</div>`}
                         </div>
                         <div class="card-network-logo">${brand.network}</div>
                     </div>`;
@@ -1077,16 +1112,8 @@
             
             contracts.forEach(acc => {
                 const brand = BrandKit.resolve(acc.name, acc.type, acc.brandSelection, acc.color);
-                const isLoan = acc.type === 'liability_loan', p = acc.balance || 0, r = (acc.interestRate || 0) / 100 / 12, n = acc.duration || 0;
-                let emiOrMaturity = 0, maturityDateStr = "ONGOING";
-
-                if (acc.startDate && n > 0) {
-                    let md = new Date(acc.startDate); md.setMonth(md.getMonth() + n);
-                    maturityDateStr = md.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' }).toUpperCase();
-                }
-
-                if (isLoan && p > 0 && n > 0) { emiOrMaturity = (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1); } 
-                else if (!isLoan && p > 0 && n > 0) { emiOrMaturity = p * Math.pow(1 + (acc.interestRate/100)/12, n); }
+                const isLoan = acc.type === 'liability_loan', p = acc.balance || 0, maturityAmt = acc.maturityAmt || 0;
+                let maturityDateStr = acc.maturityDate ? new Date(acc.maturityDate).toLocaleDateString('en-IN', { month: 'short', year: '2-digit' }).toUpperCase() : "ONGOING";
 
                 const mask = acc.accNumber ? `ACC •••• ${acc.accNumber.slice(-4)}` : brand.mask;
 
@@ -1100,20 +1127,20 @@
                     <div class="card-top">
                         <div style="flex:1; overflow:hidden;">
                             <div class="card-brand-title">${brand.brand}</div>
-                            <div class="card-tag">${isLoan ? 'ACTIVE LOAN / EMI' : 'FIXED DEPOSIT'}</div>
+                            <div class="card-tag">${isLoan ? 'ACTIVE LOAN' : 'FIXED DEPOSIT'}</div>
                         </div>
                     </div>
                     <div style="margin-top: 15px;">
                         <div style="font-size: 10px; opacity: 0.8; text-transform: uppercase; font-weight: 700; margin-bottom: 2px;">${isLoan ? 'Remaining Principal' : 'Deposit Principal'}</div>
                         <div class="card-balance">${formatter.format(p)}</div>
-                        <div style="font-size:12px; font-weight:700; opacity:0.9;">${isLoan ? 'Monthly EMI: ' + formatter.format(emiOrMaturity) : 'Maturity Amt: ' + formatter.format(emiOrMaturity)}</div>
+                        <div style="font-size:12px; font-weight:700; opacity:0.9;">${isLoan ? 'Original Loan: ' : 'Maturity Amt: '} ${formatter.format(maturityAmt)}</div>
                     </div>
                     <div class="card-bottom">
                         <div style="display:flex; gap:12px; align-items:center; flex:1; overflow:hidden;">
                             <div class="card-number">${mask}</div>
                             <div class="card-number">ENDS ${maturityDateStr}</div>
                         </div>
-                        <div class="card-network-logo">${acc.interestRate}%</div>
+                        <div class="card-network-logo">${isLoan ? 'LOAN' : 'DEPOSIT'}</div>
                     </div>`;
                 container.appendChild(el);
             });
@@ -1195,9 +1222,8 @@
             else if (id === 'catModal' && !document.getElementById('catEditId').value) { document.getElementById('catForm').reset(); document.getElementById('catModalTitle').innerText = 'Add Category'; document.getElementById('catSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Category'; toggleCatType('expense'); }
             else if (id === 'liquidModal' && !document.getElementById('liqEditId').value) { document.getElementById('liquidForm').reset(); document.getElementById('liqColorGroup').style.display = 'none'; document.getElementById('liqModalTitle').innerText = 'Add Liquid Account'; document.getElementById('liqSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Account'; }
             else if (id === 'investModal' && !document.getElementById('invEditId').value) { document.getElementById('investForm').reset(); document.getElementById('invColorGroup').style.display = 'none'; document.getElementById('invDate').valueAsDate = new Date(); document.getElementById('invModalTitle').innerText = 'Add Investment'; document.getElementById('invSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Holding'; }
-            else if (id === 'contractModal' && !document.getElementById('cntEditId').value) { document.getElementById('contractForm').reset(); document.getElementById('cntColorGroup').style.display = 'none'; document.getElementById('cntDate').valueAsDate = new Date(); document.getElementById('cntModalTitle').innerText = 'Add Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Contract'; }
+            else if (id === 'contractModal' && !document.getElementById('cntEditId').value) { document.getElementById('contractForm').reset(); document.getElementById('cntColorGroup').style.display = 'none'; document.getElementById('cntMaturityDate').valueAsDate = new Date(); document.getElementById('cntModalTitle').innerText = 'Add Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Contract'; }
             else if (id === 'goalModal' && !document.getElementById('goalEditId').value) { document.getElementById('goalForm').reset(); document.getElementById('goalModalTitle').innerText = 'New Goal'; document.getElementById('goalSubmitBtn').innerHTML = '<i data-lucide="save"></i> Create Goal'; }
-            else if (id === 'snapshotModal') { populateSnapshotHoldingDropdown(); document.getElementById('snapDate').valueAsDate = new Date(); }
             lucide.createIcons();
         }
 
@@ -1208,13 +1234,6 @@
             if(id==='contractModal') document.getElementById('cntEditId').value = ''; if(id==='goalModal') document.getElementById('goalEditId').value = '';
         }
 
-        function populateSnapshotHoldingDropdown() {
-            const dropdown = document.getElementById('snapHoldingId'), invests = db().accounts.filter(a => a.type.startsWith('asset_invest'));
-            dropdown.innerHTML = invests.map(i => `<option value="${i.id}">${i.name} (${i.type.split('_')[2].toUpperCase()})</option>`).join('');
-            if(invests.length > 0) { document.getElementById('snapValue').value = invests[0].balance; document.getElementById('snapInvested').value = invests[0].investedAmount; }
-        }
-        function openSnapshotFor(holdingId) { openModal('snapshotModal'); document.getElementById('snapHoldingId').value = holdingId; const holding = db().accounts.find(a => a.id === holdingId); if(holding) { document.getElementById('snapValue').value = holding.balance; document.getElementById('snapInvested').value = holding.investedAmount; } }
-
         function editEntity(type, id) {
             let entity;
             if(type === 'liquid') {
@@ -1224,12 +1243,12 @@
                 document.getElementById('liqModalTitle').innerText = 'Edit Liquid Account'; document.getElementById('liqSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Account'; openModal('liquidModal');
             } else if(type === 'invest') {
                 entity = db().accounts.find(a => a.id === id); if(!entity) return; document.getElementById('invEditId').value = id;
-                document.getElementById('invType').value = entity.type; document.getElementById('invName').value = entity.name; document.getElementById('invNumber').value = entity.accNumber || ''; document.getElementById('invInvested').value = entity.investedAmount; document.getElementById('invBalance').value = entity.balance; document.getElementById('invDate').value = (entity.history && entity.history.length) ? entity.history[entity.history.length-1].date : new Date().toISOString().slice(0,10);
+                document.getElementById('invType').value = entity.type; document.getElementById('invName').value = entity.name; document.getElementById('invTicker').value = entity.ticker || ''; document.getElementById('invQty').value = entity.qty || ''; document.getElementById('invPrice').value = entity.avgPrice || ''; document.getElementById('invNumber').value = entity.accNumber || ''; document.getElementById('invInvested').value = entity.investedAmount; document.getElementById('invBalance').value = entity.balance; document.getElementById('invDate').value = (entity.history && entity.history.length) ? entity.history[entity.history.length-1].date : new Date().toISOString().slice(0,10);
                 document.getElementById('invBrand').value = entity.brandSelection || 'auto'; document.getElementById('invColor').value = entity.color || '#222222'; document.getElementById('invColorGroup').style.display = entity.brandSelection === 'custom' ? 'block' : 'none';
                 document.getElementById('invModalTitle').innerText = 'Edit Investment'; document.getElementById('invSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Holding'; openModal('investModal');
             } else if(type === 'contract') {
                 entity = db().accounts.find(a => a.id === id); if(!entity) return; document.getElementById('cntEditId').value = id;
-                document.getElementById('cntType').value = entity.type; document.getElementById('cntName').value = entity.name; document.getElementById('cntNumber').value = entity.accNumber || ''; document.getElementById('cntBalance').value = entity.balance; document.getElementById('cntRate').value = entity.interestRate; document.getElementById('cntDuration').value = entity.duration; document.getElementById('cntDate').value = entity.startDate || new Date().toISOString().slice(0,10);
+                document.getElementById('cntType').value = entity.type; document.getElementById('cntName').value = entity.name; document.getElementById('cntNumber').value = entity.accNumber || ''; document.getElementById('cntPrincipal').value = entity.principal || entity.balance; document.getElementById('cntBalance').value = entity.balance; document.getElementById('cntMaturity').value = entity.maturityAmt || 0; document.getElementById('cntMaturityDate').value = entity.maturityDate || new Date().toISOString().slice(0,10);
                 document.getElementById('cntBrand').value = entity.brandSelection || 'auto'; document.getElementById('cntColor').value = entity.color || '#222222'; document.getElementById('cntColorGroup').style.display = entity.brandSelection === 'custom' ? 'block' : 'none';
                 document.getElementById('cntModalTitle').innerText = 'Edit Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Contract'; openModal('contractModal');
             } else if (type === 'category') {
@@ -1259,20 +1278,31 @@
         });
 
         document.getElementById('investForm').addEventListener('submit', (e) => { 
-            e.preventDefault(); const id = document.getElementById('invEditId').value, type = document.getElementById('invType').value, name = document.getElementById('invName').value, accNumber = document.getElementById('invNumber').value, balance = parseFloat(document.getElementById('invBalance').value), investedAmount = parseFloat(document.getElementById('invInvested').value), date = document.getElementById('invDate').value, brandSelection = document.getElementById('invBrand').value, color = document.getElementById('invColor').value; 
+            e.preventDefault(); 
+            const id = document.getElementById('invEditId').value, type = document.getElementById('invType').value, name = document.getElementById('invName').value;
+            const ticker = document.getElementById('invTicker').value.toUpperCase(), accNumber = document.getElementById('invNumber').value;
+            const qty = parseFloat(document.getElementById('invQty').value) || 1, avgPrice = parseFloat(document.getElementById('invPrice').value) || 0;
+            const balance = parseFloat(document.getElementById('invBalance').value), date = document.getElementById('invDate').value;
+            const brandSelection = document.getElementById('invBrand').value, color = document.getElementById('invColor').value; 
+            
+            const investedAmount = parseFloat(document.getElementById('invInvested').value) || (qty * avgPrice);
+
             if(!name || isNaN(balance) || isNaN(investedAmount)) return; 
-            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) { const existing = db().accounts[idx]; let history = existing.history || []; history.push({ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }); db().accounts[idx] = { ...existing, type, name, accNumber, balance, investedAmount, brandSelection, color, history }; } } 
-            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, balance, investedAmount, brandSelection, color, history: [{ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }] }); } 
+            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) { const existing = db().accounts[idx]; let history = existing.history || []; history.push({ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }); db().accounts[idx] = { ...existing, type, name, ticker, qty, avgPrice, accNumber, balance, investedAmount, brandSelection, color, history }; } } 
+            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, ticker, qty, avgPrice, accNumber, balance, investedAmount, brandSelection, color, history: [{ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }] }); } 
             saveData(); renderAll(); closeModal('investModal'); 
         });
 
-        document.getElementById('snapshotForm').addEventListener('submit', (e) => { e.preventDefault(); const holdingId = document.getElementById('snapHoldingId').value, date = document.getElementById('snapDate').value, newVal = parseFloat(document.getElementById('snapValue').value), newInvRaw = document.getElementById('snapInvested').value; if(!holdingId || !date || isNaN(newVal)) return; const holding = db().accounts.find(a => a.id === holdingId); if(holding) { const newInv = newInvRaw !== "" ? parseFloat(newInvRaw) : holding.investedAmount; holding.balance = newVal; holding.investedAmount = newInv; if(!holding.history) holding.history = []; holding.history.push({ date: date, value: newVal, invested: newInv }); saveData(); renderAll(); closeModal('snapshotModal'); } });
-        
         document.getElementById('contractForm').addEventListener('submit', (e) => { 
-            e.preventDefault(); const id = document.getElementById('cntEditId').value, type = document.getElementById('cntType').value, name = document.getElementById('cntName').value, accNumber = document.getElementById('cntNumber').value, startDate = document.getElementById('cntDate').value, balance = parseFloat(document.getElementById('cntBalance').value), interestRate = parseFloat(document.getElementById('cntRate').value), duration = parseInt(document.getElementById('cntDuration').value), brandSelection = document.getElementById('cntBrand').value, color = document.getElementById('cntColor').value; 
-            if(!name || isNaN(balance)) return; 
-            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, accNumber, startDate, balance, interestRate, duration, brandSelection, color }; } 
-            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, startDate, balance, interestRate, duration, brandSelection, color }); } 
+            e.preventDefault(); 
+            const id = document.getElementById('cntEditId').value, type = document.getElementById('cntType').value, name = document.getElementById('cntName').value, accNumber = document.getElementById('cntNumber').value;
+            const principal = parseFloat(document.getElementById('cntPrincipal').value), balance = parseFloat(document.getElementById('cntBalance').value);
+            const maturityAmt = parseFloat(document.getElementById('cntMaturity').value), maturityDate = document.getElementById('cntMaturityDate').value;
+            const brandSelection = document.getElementById('cntBrand').value, color = document.getElementById('cntColor').value; 
+            
+            if(!name || isNaN(principal) || isNaN(balance)) return; 
+            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, accNumber, principal, balance, maturityAmt, maturityDate, brandSelection, color }; } 
+            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, principal, balance, maturityAmt, maturityDate, brandSelection, color }); } 
             saveData(); renderAll(); closeModal('contractModal'); 
         });
         
