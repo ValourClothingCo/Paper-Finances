@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Valour | Wealth Tracker</title>
+    <title>Paper | Wealth Tracker</title>
     
     <link rel="icon" type="image/png" href="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,18 +24,15 @@
             
             /* Glass Refraction */
             --glass-bg: rgba(255, 255, 255, 0.4);
-            --glass-card-bg: rgba(255, 255, 255, 0.65);
-            --glass-nav-bg: rgba(255, 255, 255, 0.8);
+            --glass-card-bg: rgba(255, 255, 255, 0.7);
+            --glass-nav-bg: rgba(255, 255, 255, 0.85);
             --glass-border: 1px solid rgba(255, 255, 255, 0.9);
             --glass-highlight: inset 1px 1px 1px rgba(255, 255, 255, 0.9);
             --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
             --glass-blur: 40px;
             
-            /* Hyper-Realistic Chrome Objects (Light) */
-            --chrome-grad-1: radial-gradient(circle at 35% 25%, #ffffff 0%, #cbd5e1 15%, #64748b 45%, #94a3b8 70%, #f1f5f9 100%);
-            --chrome-shadow-1: inset -20px -20px 40px rgba(15,23,42,0.3), inset 15px 15px 30px rgba(255,255,255,1), 0 30px 60px rgba(0,0,0,0.15);
-            --chrome-grad-2: linear-gradient(135deg, #ffffff 0%, #e2e8f0 20%, #94a3b8 50%, #f8fafc 80%, #ffffff 100%);
-            --chrome-shadow-2: inset -20px -20px 50px rgba(15,23,42,0.3), inset 20px 20px 40px rgba(255,255,255,1), 0 30px 60px rgba(0,0,0,0.15);
+            /* Valour Coin Opacity */
+            --coin-opacity: 0.15;
             
             --sec-1: #0ea5e9;
             --sec-1-hover: #0284c7;
@@ -70,12 +67,8 @@
                 --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
                 --glass-blur: 48px;
                 
-                /* Hyper-Realistic Dark Mercury / Liquid Metal */
-                --chrome-grad-1: radial-gradient(circle at 28% 28%, #ffffff 0%, #a3a3a3 6%, #1a1a1a 28%, #000000 65%, #2a2a2a 100%);
-                --chrome-shadow-1: inset -20px -20px 50px #000000, inset 12px 12px 35px rgba(255,255,255,0.7), inset -4px 4px 15px rgba(255,255,255,0.2), 0 40px 80px rgba(0,0,0,1);
-                
-                --chrome-grad-2: linear-gradient(115deg, #0f172a 0%, #475569 25%, #ffffff 48%, #1e293b 55%, #000000 100%);
-                --chrome-shadow-2: inset -30px -30px 60px #000000, inset 15px 15px 40px rgba(255,255,255,0.5), 0 40px 80px rgba(0,0,0,1);
+                /* Valour Coin Opacity */
+                --coin-opacity: 0.4;
                 
                 --sec-1: #38bdf8;
                 --sec-1-hover: #0ea5e9;
@@ -97,36 +90,46 @@
 
         body {
             font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; color: var(--text-main);
-            background-color: transparent; /* Allows Chrome layer to paint correctly */
-            -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 120px;
+            background-color: var(--bg-base); -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 120px;
         }
         body.modal-active { overflow: hidden; }
         
         /* Premium sleek icons globally */
         .lucide { stroke-width: 1.5px; }
 
-        /* --- HYPER-REALISTIC LIQUID METAL ENGINE --- */
-        .chrome-canvas-wrapper {
+        /* --- VALOUR COIN BACKGROUND ENGINE --- */
+        .motion-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
             background: var(--bg-base); overflow: hidden; pointer-events: none;
+            transform: translateZ(0);
         }
 
-        .chrome-shape {
+        .valour-coin {
             position: absolute;
+            opacity: var(--coin-opacity);
             will-change: transform, opacity;
             transition: opacity 0.8s ease-in-out;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+            user-select: none; pointer-events: none;
         }
 
-        body.animations-paused .chrome-shape { opacity: 0 !important; animation-play-state: paused !important; }
+        body.animations-paused .valour-coin {
+            opacity: 0 !important;
+            animation-play-state: paused !important;
+        }
 
-        /* 3 Distinct Sharp 3D Objects */
-        .shape-orb-1 { width: 550px; height: 550px; border-radius: 50%; background: var(--chrome-grad-1); box-shadow: var(--chrome-shadow-1); top: -10%; left: -15%; animation: floatOrb 22s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
-        .shape-pill-1 { width: 320px; height: 750px; border-radius: 160px; background: var(--chrome-grad-2); box-shadow: var(--chrome-shadow-2); bottom: -20%; right: -10%; animation: floatCapsule 28s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
-        .shape-orb-2 { width: 200px; height: 200px; border-radius: 50%; background: var(--chrome-grad-1); box-shadow: var(--chrome-shadow-1); top: 45%; left: 35%; animation: floatOrbSmall 18s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate-reverse; }
+        /* 5 Subtle Valour Coins Floating */
+        .coin-1 { width: 450px; top: -5%; left: -5%; animation: floatCoin1 25s ease-in-out infinite alternate; }
+        .coin-2 { width: 350px; bottom: -10%; right: -5%; animation: floatCoin2 30s ease-in-out infinite alternate-reverse; }
+        .coin-3 { width: 220px; top: 40%; left: 40%; animation: floatCoin3 22s ease-in-out infinite alternate; }
+        .coin-4 { width: 180px; top: 15%; right: 25%; animation: floatCoin4 18s ease-in-out infinite alternate-reverse; }
+        .coin-5 { width: 280px; bottom: 20%; left: 10%; animation: floatCoin5 28s ease-in-out infinite alternate; }
 
-        @keyframes floatOrb { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(15vw, 10vh, 0); } }
-        @keyframes floatCapsule { 0% { transform: translate3d(0, 0, 0) rotate(-15deg); } 100% { transform: translate3d(-10vw, -15vh, 0) rotate(5deg); } }
-        @keyframes floatOrbSmall { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-10vw, -10vh, 0); } }
+        @keyframes floatCoin1 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(8vw, 10vh, 0) rotate(35deg); } }
+        @keyframes floatCoin2 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(-10vw, -12vh, 0) rotate(-25deg); } }
+        @keyframes floatCoin3 { 0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); } 100% { transform: translate3d(-6vw, 15vh, 0) scale(1.15) rotate(15deg); } }
+        @keyframes floatCoin4 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(12vw, 5vh, 0) rotate(-40deg); } }
+        @keyframes floatCoin5 { 0% { transform: translate3d(0, 0, 0) scale(1); } 100% { transform: translate3d(-5vw, -15vh, 0) scale(1.1); } }
 
         /* --- LIQUID GLASS CONTAINERS --- */
         .glass {
@@ -138,6 +141,7 @@
             background: var(--glass-card-bg); border: var(--glass-border); border-radius: var(--radius-inner);
             box-shadow: var(--glass-highlight); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .glass-inner:hover { transform: translateY(-2px); }
 
         /* Dynamic Morphing Nav */
         .b2b-pill-base {
@@ -159,8 +163,9 @@
         .nav-links::-webkit-scrollbar { display: none; }
         .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 13px; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
         .nav-links a:hover, .nav-links a.active { color: var(--sec-1); }
+        .nav-links a .lucide { width: 16px; height: 16px; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 110px 20px 40px; position: relative; z-index: 10; }
+        .container { max-width: 900px; margin: 0 auto; padding: 110px 20px 40px; position: relative; z-index: 1; }
 
         /* Profile Toggle */
         .top-controls-wrapper { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 0 auto 40px auto; max-width: 400px; }
@@ -173,6 +178,7 @@
             flex: 1; background: transparent; border: none; padding: 10px; border-radius: var(--radius-pill); cursor: pointer;
             font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text-muted); transition: all 0.3s ease; text-transform: uppercase; font-size: 13px; display: flex; justify-content: center; align-items: center; gap: 6px;
         }
+        .profile-toggle button .lucide { width: 16px; height: 16px; }
         .profile-toggle button.active { background: var(--sec-1); color: #fff; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
         .anim-toggle-btn {
@@ -215,13 +221,16 @@
         .chart-container h4 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; margin-bottom: 15px; color: var(--text-main); font-size: 20px;}
         .chart-wrapper { position: relative; width: 100%; height: 240px; }
 
-        /* --- SLEEK HORIZONTAL FINTECH CARD CAROUSEL --- */
-        .card-carousel { display: flex; gap: 16px; overflow-x: auto; padding: 6px 4px 24px 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        /* --- SLEEK HORIZONTAL FINTECH CARD CAROUSEL (FIXED OVERFLOW) --- */
+        .card-carousel {
+            display: flex; gap: 16px; overflow-x: auto; padding: 6px 4px 24px 4px;
+            scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        }
         .card-carousel::-webkit-scrollbar { display: none; }
 
         .fintech-card {
-            min-width: 270px; max-width: 310px; height: 175px; border-radius: 22px; padding: 22px;
-            scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: space-between;
+            min-width: 270px; max-width: 320px; min-height: 200px; border-radius: 22px; padding: 22px;
+            scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 15px;
             box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.15); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none; overflow: hidden;
@@ -235,16 +244,17 @@
             pointer-events: none; transform: rotate(20deg);
         }
 
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; overflow: hidden; }
-        .card-brand-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;}
-        .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-        .card-chip { width: 34px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #d4af37 0%, #f9e8a2 50%, #aa820a 100%); border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.8); position: relative; flex-shrink:0; margin-left:10px;}
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; }
+        .card-brand-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; line-height: 1.1; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 4px; display: block; }
+        .card-chip { width: 34px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #d4af37 0%, #f9e8a2 50%, #aa820a 100%); border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.8); position: relative; flex-shrink:0; margin-left: 10px; }
         
         .card-balance { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; line-height: 1.1; margin-top: 4px; z-index: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
-        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; margin-top: auto; padding-top:10px; overflow: hidden;}
-        .card-number { font-family: 'Inter', monospace; font-size: 12px; font-weight: 600; opacity: 0.9; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-network-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; text-transform: uppercase; flex-shrink:0; margin-left: 10px;}
+        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; margin-top: auto; padding-top: 10px; width: 100%; }
+        .card-details-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .card-number { font-family: 'Inter', monospace; font-size: 12px; font-weight: 600; opacity: 0.9; letter-spacing: 1px; white-space: nowrap; }
+        .card-network-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; text-transform: uppercase; flex-shrink:0; margin-left: auto; text-align: right; }
 
         .card-action-bar { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 2; opacity: 0; transition: opacity 0.2s ease; }
         .fintech-card:hover .card-action-bar { opacity: 1; }
@@ -357,11 +367,17 @@
 </head>
 <body>
 
-    <!-- Hyper-Realistic 3D Chrome Engine -->
+    <!-- Hyper-Realistic 3D Valour Coin Engine -->
     <div class="chrome-canvas-wrapper">
-        <div class="chrome-sculpture chrome-orb-main"></div>
-        <div class="chrome-sculpture chrome-capsule"></div>
-        <div class="chrome-sculpture chrome-orb-small"></div>
+        <!-- Replaced abstract chrome with drifting Valour Coins based on the provided reference -->
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-1" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-2" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-3" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-4" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-5" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-6" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-7" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="chrome-drop drop-8" alt="">
     </div>
 
     <!-- Morphing Nav Structure -->
@@ -569,7 +585,7 @@
                     <input type="color" id="liqColor" class="form-control" value="#222222">
                 </div>
 
-                <div class="form-group"><label><i data-lucide="building-2"></i> Bank / Card Name</label><input type="text" id="liqName" class="form-control" placeholder="e.g. HDFC Bank, SBI Card" required></div>
+                <div class="form-group"><label><i data-lucide="building-2"></i> Bank / Card Name</label><input type="text" id="liqName" class="form-control" placeholder="e.g. HDFC Bank, SBI Card, Cash" required></div>
                 
                 <div class="form-group"><label><i data-lucide="hash"></i> Card / Account Number</label><input type="text" id="liqNumber" class="form-control" placeholder="•••• 1234 (Optional)"></div>
                 <div style="display:flex; gap:10px;">
@@ -732,9 +748,10 @@
     </div>
 
     <script>
+        // Init globally thin lucide icons
         lucide.createIcons();
 
-        // --- BRANDKIT RECOGNITION ENGINE (STRICT TYPE LOGIC) ---
+        // --- BRANDKIT RECOGNITION ENGINE WITH CUSTOM COLOR SUPPORT ---
         const BrandKit = {
             library: {
                 "hdfc": { gradient: "linear-gradient(135deg, #004c8f 0%, #001a33 100%)", textColor: "#ffffff", brand: "HDFC BANK" },
@@ -822,7 +839,7 @@
         }
 
         function loadData() {
-            const stored = localStorage.getItem('aazam_finance_apk_v17');
+            const stored = localStorage.getItem('aazam_finance_apk_v18');
             if (stored) { 
                 state = JSON.parse(stored); 
                 if(state.settings === undefined) state.settings = { animations: true };
@@ -842,7 +859,7 @@
             saveData();
             applyAnimationState();
         }
-        function saveData() { localStorage.setItem('aazam_finance_apk_v17', JSON.stringify(state)); }
+        function saveData() { localStorage.setItem('aazam_finance_apk_v18', JSON.stringify(state)); }
 
         function toggleAnimation() {
             state.settings.animations = !state.settings.animations;
