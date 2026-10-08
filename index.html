@@ -17,15 +17,15 @@
     <style>
         /* --- DYNAMIC SYSTEM THEME (LIGHT & DARK) --- */
         :root {
-            /* SVG Noise for physical glass texture */
-            --noise-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+            /* Optimized SVG Noise */
+            --noise-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
 
             /* Light Theme Defaults */
             --bg-base: #f8fafc;
             --text-main: #020617;
             --text-muted: #475569;
             
-            /* Premium Liquid Glass Refraction (Light) */
+            /* Premium Liquid Glass Refraction */
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-card-bg: rgba(255, 255, 255, 0.35);
             --glass-nav-bg: rgba(255, 255, 255, 0.5);
@@ -62,7 +62,7 @@
                 --text-main: #ffffff;
                 --text-muted: #94a3b8;
                 
-                /* Premium Liquid Glass Refraction (Dark) */
+                /* Premium Liquid Glass Refraction */
                 --glass-bg: rgba(10, 15, 20, 0.25);
                 --glass-card-bg: rgba(25, 30, 40, 0.35);
                 --glass-nav-bg: rgba(5, 5, 5, 0.5);
@@ -99,14 +99,13 @@
         }
         body.modal-active { overflow: hidden; }
         
-        /* Premium sleek icons globally */
         .lucide { stroke-width: 1.5px; }
 
         /* --- VALOUR COIN BACKGROUND ENGINE --- */
         .motion-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
             background: var(--bg-base); overflow: hidden; pointer-events: none;
-            transform: translateZ(0); /* Hardware acceleration */
+            transform: translateZ(0);
         }
 
         .valour-coin {
@@ -116,28 +115,24 @@
             will-change: transform, opacity;
             transition: opacity 0.8s ease-in-out;
             user-select: none; pointer-events: none;
-            /* Object-fit ensures the image scales perfectly without distortion */
             object-fit: contain; 
         }
 
         body.animations-paused .valour-coin { opacity: 0 !important; animation-play-state: paused !important; }
 
-        /* 5 Balanced Valour Coins floating in random 3D space */
         .coin-1 { width: 350px; top: -5%; left: 5%; animation: float1 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
         .coin-2 { width: 280px; bottom: 5%; right: -5%; animation: float2 28s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
         .coin-3 { width: 450px; top: 35%; left: 35%; animation: float3 32s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
         .coin-4 { width: 180px; top: 15%; right: 15%; animation: float4 20s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
         .coin-5 { width: 220px; bottom: 15%; left: 10%; animation: float5 24s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
 
-        /* Mobile Adjustments for Coins to reduce congestion */
         @media (max-width: 768px) {
-            .coin-4, .coin-5 { display: none !important; } /* Hide extra coins */
+            .coin-4, .coin-5 { display: none !important; }
             .coin-1 { width: 200px; top: -2%; left: -5%; }
             .coin-2 { width: 160px; bottom: 8%; right: -5%; }
             .coin-3 { width: 280px; top: 40%; left: 25%; }
         }
 
-        /* Butter-smooth translate3d keyframes */
         @keyframes float1 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(10vw, 15vh, 0) rotate(35deg); } }
         @keyframes float2 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(-15vw, -10vh, 0) rotate(-45deg); } }
         @keyframes float3 { 0% { transform: translate3d(0, 0, 0) scale3d(1,1,1); } 100% { transform: translate3d(-8vw, 12vh, 0) scale3d(1.15,1.15,1) rotate(15deg); } }
@@ -146,13 +141,15 @@
 
         /* --- LIQUID GLASS CONTAINERS --- */
         .glass {
-            background: var(--glass-bg), var(--noise-url); background-blend-mode: overlay;
+            background-color: var(--glass-bg);
+            background-image: var(--noise-url);
             backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             border: var(--glass-border); box-shadow: var(--glass-shadow), var(--glass-highlight); border-radius: var(--radius-panel);
         }
 
         .glass-inner {
-            background: var(--glass-card-bg), var(--noise-url); background-blend-mode: overlay;
+            background-color: var(--glass-card-bg);
+            background-image: var(--noise-url);
             backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             border: var(--glass-border); border-radius: var(--radius-inner);
             box-shadow: var(--glass-highlight); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -163,7 +160,7 @@
         .b2b-pill-base {
             position: fixed; top: 20px; left: 0; right: 0; margin: 0 auto; z-index: 1000;
             padding: 12px 25px; border-radius: var(--radius-pill); display: flex; justify-content: center; align-items: center;
-            background: var(--glass-nav-bg), var(--noise-url); background-blend-mode: overlay;
+            background-color: var(--glass-nav-bg); background-image: var(--noise-url);
             backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             border: var(--glass-border); box-shadow: 0 10px 35px rgba(0,0,0,0.25), var(--glass-highlight);
             will-change: width, transform; backface-visibility: hidden; transform: translateZ(0); 
@@ -204,7 +201,6 @@
         }
         .anim-toggle-btn:hover { transform: scale(1.05); background: var(--sec-1); color: #fff; border-color: var(--sec-1); box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
 
-        @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         #animatedContent section { margin-bottom: 50px; padding-top: 20px; scroll-margin-top: 110px; }
         
         .section-header-wrap { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
@@ -251,8 +247,8 @@
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none; overflow: hidden;
             
-            /* Glass styling replacing specific gradients */
-            background: var(--glass-card-bg), var(--noise-url); background-blend-mode: overlay;
+            background-color: var(--glass-card-bg); 
+            background-image: var(--noise-url);
             backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             border: var(--glass-border); 
             box-shadow: var(--glass-shadow), var(--glass-highlight);
@@ -300,7 +296,7 @@
         
         /* Goal Strategy Box (AI Logic) */
         .strategy-box { margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px; border: 1px dashed var(--glass-border); display: none; }
-        .list-item.expanded .strategy-box { display: block; animation: fadeSlideUp 0.3s ease; }
+        .list-item.expanded .strategy-box { display: block; }
         .strategy-box h5 { display: flex; align-items: center; gap: 6px; color: var(--sec-1); font-size: 13px; text-transform: uppercase; margin-bottom: 6px; }
         .strategy-box p { font-size: 13px; color: var(--text-main); font-weight: 500; line-height: 1.5; }
 
@@ -329,21 +325,30 @@
 
         /* Modals */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.25); /* Lightened to allow modal glass to refract coins directly */
             z-index: 2000; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         
-        /* Applied Global Liquid Glass Classes to Modals */
         .modal-content {
             width: 100%; max-height: 90vh; overflow-y: auto; padding: 35px 25px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;
             transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative; border-top: var(--glass-border);
             
-            /* Glass Refraction */
-            background: var(--glass-card-bg), var(--noise-url); background-blend-mode: overlay;
+            background-color: var(--glass-bg); 
+            background-image: var(--noise-url);
             backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             box-shadow: var(--glass-shadow), var(--glass-highlight);
+
+            /* Hide Scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        /* WebKit Scrollbar Hiding */
+        .modal-content::-webkit-scrollbar {
+            display: none;
         }
         
         .modal-overlay.active .modal-content { transform: translateY(0); }
@@ -354,7 +359,6 @@
                 width: 90%; max-width: 480px; border-radius: var(--radius-panel); 
                 border: var(--glass-border); 
                 transform: scale(0.95) translateY(20px); 
-                /* Removed overflow-y: visible; here to fix desktop scrolling bug */
             }
             .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
         }
@@ -626,7 +630,7 @@
         </div>
     </div>
 
-    <!-- 3. Investment Modal (ADDED MISSING FIELDS) -->
+    <!-- 3. Investment Modal -->
     <div class="modal-overlay" id="investModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -675,7 +679,6 @@
                     <div class="form-group" style="flex:1;"><label><i data-lucide="indian-rupee"></i> Avg Buy Price</label><input type="number" step="0.01" id="invPrice" class="form-control" placeholder="0.00" required></div>
                 </div>
                 
-                <!-- Added Market Value field -->
                 <div class="form-group"><label><i data-lucide="indian-rupee"></i> Current Market Value</label><input type="number" step="0.01" id="invBalance" class="form-control" placeholder="0.00" required></div>
 
                 <div class="form-group"><label><i data-lucide="hash"></i> Folio / Account No</label><input type="text" id="invNumber" class="form-control" placeholder="Optional"></div>
@@ -791,8 +794,29 @@
     <script>
         // Init globally thin lucide icons
         lucide.createIcons();
+        
+        // --- Web App Manifest Injector (PWA Engine) ---
+        // Dynamically creates the manifest required by Chrome to show the "Install App" prompt
+        const initPWA = () => {
+            const manifest = {
+                name: "Valour | Wealth Tracker",
+                short_name: "Valour",
+                start_url: window.location.pathname || "/",
+                display: "standalone",
+                background_color: "#000000",
+                theme_color: "#0ea5e9",
+                icons: [
+                    { src: "https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660", sizes: "192x192", type: "image/png" },
+                    { src: "https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660", sizes: "512x512", type: "image/png" }
+                ]
+            };
+            const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            const link = document.createElement('link');
+            link.rel = 'manifest';
+            link.href = URL.createObjectURL(blob);
+            document.head.appendChild(link);
+        };
 
-        // --- BRANDKIT RECOGNITION ENGINE WITH CUSTOM COLOR SUPPORT ---
         const BrandKit = {
             library: {
                 "hdfc": { gradient: "linear-gradient(135deg, #004c8f 0%, #001a33 100%)", textColor: "#ffffff", brand: "HDFC BANK" },
@@ -822,7 +846,6 @@
                     }
                 }
 
-                // Strict Network Association based on Type
                 let network = "ASSET";
                 if (type === "liability_cc") {
                     network = s.includes("amex") ? "AMEX" : (s.includes("rupay") ? "RUPAY" : (s.includes("master") || s.includes("amazon") ? "MASTERCARD" : "VISA"));
@@ -915,19 +938,17 @@
             lucide.createIcons();
         }
 
-        function triggerProfileAnimation() {
-            const sections = document.querySelectorAll('#animatedContent section');
-            sections.forEach((sec, i) => { sec.style.animation = 'none'; sec.offsetHeight; sec.style.opacity = '0'; sec.style.animation = `fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.08}s forwards`; });
-        }
-
+        // Profile switch is now instantly rendered with zero CSS staggering delays,
+        // which completely fixes the transparent panel bug and loads instantly.
         function switchProfile(profile) {
             if(state.activeProfile === profile) return;
             state.activeProfile = profile;
-            document.getElementById('btn-personal').classList.toggle('active', profile === 'personal'); document.getElementById('btn-business').classList.toggle('active', profile === 'business');
-            saveData(); renderAll(); triggerProfileAnimation();
+            document.getElementById('btn-personal').classList.toggle('active', profile === 'personal'); 
+            document.getElementById('btn-business').classList.toggle('active', profile === 'business');
+            saveData(); 
+            renderAll(); 
         }
 
-        // --- LIVE MARKET SYNC ENGINE ---
         async function syncLivePrices() {
             const btn = document.getElementById('btn-sync-live');
             if(btn) btn.innerHTML = '<i data-lucide="loader"></i> Syncing...';
@@ -946,7 +967,7 @@
                         
                         if (livePrice && !isNaN(livePrice)) {
                             acc.livePrice = livePrice;
-                            acc.balance = acc.qty * livePrice; // New Value
+                            acc.balance = acc.qty * livePrice; 
                             
                             const today = new Date().toISOString().slice(0,10);
                             if (!acc.history) acc.history = [];
@@ -968,7 +989,6 @@
             lucide.createIcons();
         }
 
-        // --- AI Strategy Engine ---
         function generateGoalStrategy(goal) {
             const currentMonth = new Date().getMonth();
             let monthInc = 0, monthExp = 0;
@@ -1387,6 +1407,7 @@
         function deleteTx(id) { if(confirm("Delete transaction record?")) { db().transactions = db().transactions.filter(t => t.id !== id); saveData(); renderAll(); } }
 
         document.addEventListener('DOMContentLoaded', () => { 
+            initPWA(); // Initialize Web App Manifest 
             initDynamicPills(); loadData(); renderAll(); 
             document.querySelectorAll('.nav-links a').forEach(anchor => { anchor.addEventListener('click', function (e) { e.preventDefault(); document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' }); }); });
         });
