@@ -69,9 +69,7 @@
                 --glass-filter: blur(48px) saturate(180%) brightness(1.2) contrast(1.1);
                 
                 --glass-border: 1px solid rgba(255, 255, 255, 0.12);
-                /* Softened highlight mapping to prevent harsh dark edges */
                 --glass-highlight: inset 1px 1px 1px rgba(255, 255, 255, 0.15), inset -1px -1px 2px rgba(0,0,0,0.3);
-                /* Premium subtle depth scaling (replaces harsh clipping shadow) */
                 --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
                 
                 --coin-opacity: 0.85;
@@ -185,11 +183,8 @@
 
         .morph-canvas { position: relative; width: 100%; height: 36px; display: flex; justify-content: center; align-items: center; perspective: 1000px; }
         .morph-content { position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; width: 100%; height: 100%; display: flex; align-items: center; justify-content: space-between; will-change: opacity, transform; backface-visibility: hidden; }
-        
         #logo-wide { justify-content: space-between; }
-        
         #logo-stacked { justify-content: center; opacity: 0; transform: scale(0.75); pointer-events: none; }
-        
         .nav-favicon { width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
         .nav-favicon-wide { width: 32px; height: 32px; object-fit: contain; margin-right: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
@@ -257,10 +252,7 @@
 
         /* --- SLEEK HORIZONTAL FINTECH CARD CAROUSEL --- */
         .card-carousel {
-            display: flex; gap: 16px; overflow-x: auto; 
-            /* Expanded bottom padding to accommodate full shadow blur without clipping */
-            padding: 10px 8px 50px 8px; 
-            margin: 0px -8px -20px -8px; /* Counter margin to keep the grid aligned */
+            display: flex; gap: 16px; overflow-x: auto; padding: 10px 8px 50px 8px; margin: 0px -8px -20px -8px;
             scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
         .card-carousel::-webkit-scrollbar { display: none; }
@@ -370,10 +362,7 @@
             -ms-overflow-style: none; 
         }
         
-        .modal-content::-webkit-scrollbar {
-            display: none;
-        }
-        
+        .modal-content::-webkit-scrollbar { display: none; }
         .modal-overlay.active .modal-content { transform: translateY(0); }
 
         @media (min-width: 600px) {
@@ -423,7 +412,7 @@
         .empty-state .lucide { width: 48px; height: 48px; opacity: 0.8; color: var(--text-main); }
 
         /* Dynamic Detail Modal Styling */
-        .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--glass-border); }
         .stat-row:last-child { border-bottom: none; padding-bottom: 0; }
         .stat-row span { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
         .stat-row strong { font-size: 15px; font-weight: 600; color: var(--text-main); text-align: right; max-width: 60%; line-height: 1.3;}
@@ -455,7 +444,7 @@
                     <a href="#transactions"><i data-lucide="list"></i> Logs</a>
                 </div>
             </div>
-            <!-- Dynamic Pointer and Scroll to Top added here -->
+            <!-- Scroll to Top Coin -->
             <div id="logo-stacked" class="morph-content" style="cursor: pointer;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" alt="Valour Coin" class="nav-favicon">
             </div>
@@ -682,8 +671,6 @@
             </div>
             <form id="investForm">
                 <input type="hidden" id="invEditId">
-                <input type="hidden" id="invInvested">
-                
                 <div class="form-group">
                     <label><i data-lucide="pie-chart"></i> Asset Type</label>
                     <select id="invType" class="form-control" required>
@@ -940,7 +927,6 @@
                 
                 logoStacked.style.opacity = Math.max((easedRatio - 0.2) * 1.5, 0); 
                 logoStacked.style.transform = `scale(${0.75 + (easedRatio * 0.25)}) translateZ(0)`;
-                // Fixes mobile nav bar blocking touch scrolling issue
                 logoStacked.style.pointerEvents = easedRatio > 0.5 ? 'auto' : 'none';
             }
             window.addEventListener('scroll', updateTargetScroll, { passive: true });
@@ -1613,7 +1599,6 @@
             } 
         }
 
-        // Restricts standard transaction dropdowns to liquid accounts only (removes investments & FDs)
         function populateAccountSelect(elementId) { 
             const select = document.getElementById(elementId); 
             select.innerHTML = ''; 
