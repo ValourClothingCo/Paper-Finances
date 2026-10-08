@@ -101,6 +101,21 @@
         
         .lucide { stroke-width: 1.5px; }
 
+        /* Sync Animations */
+        @keyframes pulseLive {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .live-active {
+            color: var(--danger) !important; 
+            animation: pulseLive 1.5s infinite ease-in-out;
+        }
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
         /* --- VALOUR COIN BACKGROUND ENGINE --- */
         .motion-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
@@ -169,7 +184,7 @@
         .morph-canvas { position: relative; width: 100%; height: 36px; display: flex; justify-content: center; align-items: center; perspective: 1000px; }
         .morph-content { position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; width: 100%; height: 100%; display: flex; align-items: center; justify-content: space-between; will-change: opacity, transform; backface-visibility: hidden; }
         #logo-wide { justify-content: space-between; }
-        #logo-stacked { justify-content: center; opacity: 0; transform: scale(0.75); pointer-events: none; }
+        #logo-stacked { justify-content: center; opacity: 0; transform: scale(0.75); }
         .nav-favicon { width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
         .nav-favicon-wide { width: 32px; height: 32px; object-fit: contain; margin-right: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
@@ -201,6 +216,7 @@
         }
         .anim-toggle-btn:hover { transform: scale(1.05); background: var(--sec-1); color: #fff; border-color: var(--sec-1); box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
 
+        @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         #animatedContent section { margin-bottom: 50px; padding-top: 20px; scroll-margin-top: 110px; }
         
         .section-header-wrap { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
@@ -282,7 +298,8 @@
 
         /* Standard Item Lists */
         .item-list { display: flex; flex-direction: column; gap: 12px; }
-        .list-item { padding: 20px; position: relative; }
+        .list-item { padding: 20px; position: relative; transition: transform 0.2s;}
+        .list-item:hover { transform: translateY(-2px); }
         .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .item-title-group h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; text-transform: uppercase; margin: 0; line-height: 1.2; letter-spacing: 0.5px;}
         .item-title-group span { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; margin-top: 4px;}
@@ -296,7 +313,7 @@
         
         /* Goal Strategy Box (AI Logic) */
         .strategy-box { margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px; border: 1px dashed var(--glass-border); display: none; }
-        .list-item.expanded .strategy-box { display: block; }
+        .list-item.expanded .strategy-box { display: block; animation: fadeSlideUp 0.3s ease; }
         .strategy-box h5 { display: flex; align-items: center; gap: 6px; color: var(--sec-1); font-size: 13px; text-transform: uppercase; margin-bottom: 6px; }
         .strategy-box p { font-size: 13px; color: var(--text-main); font-weight: 500; line-height: 1.5; }
 
@@ -326,7 +343,7 @@
         /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.25); /* Lightened to allow modal glass to refract coins directly */
+            background: rgba(0, 0, 0, 0.25);
             z-index: 2000; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -341,12 +358,10 @@
             backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             box-shadow: var(--glass-shadow), var(--glass-highlight);
 
-            /* Hide Scrollbar */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;
+            -ms-overflow-style: none; 
         }
         
-        /* WebKit Scrollbar Hiding */
         .modal-content::-webkit-scrollbar {
             display: none;
         }
@@ -398,6 +413,12 @@
         
         .empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .empty-state .lucide { width: 48px; height: 48px; opacity: 0.8; color: var(--text-main); }
+
+        /* Dynamic Detail Modal Styling */
+        .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .stat-row span { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+        .stat-row strong { font-size: 15px; font-weight: 600; color: var(--text-main); text-align: right; max-width: 60%; line-height: 1.3;}
     </style>
 </head>
 <body>
@@ -411,7 +432,7 @@
         <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-5" alt="">
     </div>
 
-    <!-- Morphing Nav Structure -->
+    <!-- Morphing Nav Structure (Scroll-To-Top Event Added) -->
     <nav class="b2b-pill-base" id="topNav">
         <div class="morph-canvas">
             <div id="logo-wide" class="morph-content">
@@ -426,7 +447,8 @@
                     <a href="#transactions"><i data-lucide="list"></i> Logs</a>
                 </div>
             </div>
-            <div id="logo-stacked" class="morph-content">
+            <!-- Dynamic Pointer and Scroll to Top added here -->
+            <div id="logo-stacked" class="morph-content" style="cursor: pointer;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" alt="Valour Coin" class="nav-favicon">
             </div>
         </div>
@@ -482,7 +504,7 @@
                 <div class="section-header-wrap">
                     <h2 class="section-header">Investments</h2>
                     <div style="display:flex; gap:10px;">
-                        <button class="btn-small" onclick="syncLivePrices()" id="btn-sync-live"><i data-lucide="refresh-cw"></i> Sync Live</button>
+                        <button class="btn-small" onclick="syncLivePrices(true)" id="btn-sync-live"><i data-lucide="radio" class="live-active"></i> Live Market</button>
                         <button class="btn-small" onclick="openModal('investModal')"><i data-lucide="plus"></i> Add Holding</button>
                     </div>
                 </div>
@@ -549,6 +571,19 @@
     <button class="fab" onclick="openModal('txModal')"><i data-lucide="plus"></i></button>
 
     <!-- Modals -->
+
+    <!-- DETAILS MODAL -->
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="detailsModalTitle">Details</h3>
+                <button class="close-btn" onclick="closeModal('detailsModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div id="detailsModalBody" style="display: flex; flex-direction: column;">
+                <!-- Content generated dynamically -->
+            </div>
+        </div>
+    </div>
     
     <!-- 1. Transaction Modal -->
     <div class="modal-overlay" id="txModal">
@@ -792,11 +827,8 @@
     </div>
 
     <script>
-        // Init globally thin lucide icons
         lucide.createIcons();
         
-        // --- Web App Manifest Injector (PWA Engine) ---
-        // Dynamically creates the manifest required by Chrome to show the "Install App" prompt
         const initPWA = () => {
             const manifest = {
                 name: "Valour | Wealth Tracker",
@@ -877,6 +909,7 @@
 
         let state = { settings: { animations: true }, activeProfile: 'personal', profiles: { personal: { accounts: [], transactions: [], categories: [], goals: [] }, business: { accounts: [], transactions: [], categories: [], goals: [] } } };
         let barChartInstance = null, pieChartInstance = null, investChartInstance = null;
+        let liveSyncInterval = null;
         const formatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
         const db = () => state.profiles[state.activeProfile];
 
@@ -896,7 +929,7 @@
                 
                 morphPill.style.width = Math.round((maxW - ((maxW - minW) * easedRatio)) / 2) * 2 + 'px';
                 logoWide.style.opacity = Math.max(1 - (easedRatio * 1.8), 0); logoWide.style.transform = `scale(${1 - (easedRatio * 0.15)}) translateZ(0)`; logoWide.style.pointerEvents = easedRatio > 0.5 ? 'none' : 'auto';
-                logoStacked.style.opacity = Math.max((easedRatio - 0.2) * 1.5, 0); logoStacked.style.transform = `scale(${0.75 + (easedRatio * 0.25)}) translateZ(0)`; logoStacked.style.pointerEvents = easedRatio > 0.5 ? 'auto' : 'none';
+                logoStacked.style.opacity = Math.max((easedRatio - 0.2) * 1.5, 0); logoStacked.style.transform = `scale(${0.75 + (easedRatio * 0.25)}) translateZ(0)`;
             }
             window.addEventListener('scroll', updateTargetScroll, { passive: true });
             window.addEventListener('resize', updateTargetScroll, { passive: true });
@@ -915,8 +948,8 @@
                 state.profiles.personal.accounts = [
                     { id: 'a1', name: 'HDFC Checking', type: 'asset_bank', balance: 150000, accNumber: '1098' }, 
                     { id: 'a2', name: 'Amazon Pay Credit Card', type: 'liability_cc', balance: 1968, accNumber: '3009', expiry: '01/29', cvv: '***' },
-                    { id: 'a3', name: 'ASHOKLEY', ticker: 'ASHOKLEY.NS', type: 'asset_invest_stock', qty: 100, avgPrice: 52.24, balance: 5072, investedAmount: 5224, history: [{ date: '2026-01-10', value: 5224, invested: 5224 }, { date: today, value: 5072, invested: 5224 }] },
-                    { id: 'a4', name: 'BEL', ticker: 'BEL.NS', type: 'asset_invest_stock', qty: 50, avgPrice: 100.72, balance: 4917, investedAmount: 5036, history: [{ date: '2026-02-15', value: 5036, invested: 5036 }, { date: today, value: 4917, invested: 5036 }] }
+                    { id: 'a3', name: 'ASHOKLEY', ticker: 'ASHOKLEY.NS', type: 'asset_invest_stock', qty: 34, avgPrice: 154.00, balance: 5072, investedAmount: 5236, history: [{ date: '2026-01-10', value: 5236, invested: 5236 }, { date: today, value: 5072, invested: 5236 }] },
+                    { id: 'a4', name: 'BEL', ticker: 'BEL.NS', type: 'asset_invest_stock', qty: 13, avgPrice: 101.00, balance: 4917, investedAmount: 1313, history: [{ date: '2026-02-15', value: 1313, invested: 1313 }, { date: today, value: 4917, invested: 1313 }] }
                 ];
                 state.profiles.business.categories = [{ id: 'bc1', name: 'Valour Revenue', type: 'income', limit: 0 }, { id: 'bc3', name: 'Meta Ads', type: 'expense', limit: 40000 }];
                 state.profiles.business.accounts = [{ id: 'ba1', name: 'HDFC Business Checking', type: 'asset_bank', balance: 250000 }];
@@ -938,8 +971,6 @@
             lucide.createIcons();
         }
 
-        // Profile switch is now instantly rendered with zero CSS staggering delays,
-        // which completely fixes the transparent panel bug and loads instantly.
         function switchProfile(profile) {
             if(state.activeProfile === profile) return;
             state.activeProfile = profile;
@@ -949,44 +980,164 @@
             renderAll(); 
         }
 
-        async function syncLivePrices() {
+        function startLiveSync() {
+            if (liveSyncInterval) clearInterval(liveSyncInterval);
+            setTimeout(() => syncLivePrices(false), 500); 
+            liveSyncInterval = setInterval(() => syncLivePrices(false), 10000); 
+        }
+
+        async function syncLivePrices(isManual = false) {
             const btn = document.getElementById('btn-sync-live');
-            if(btn) btn.innerHTML = '<i data-lucide="loader"></i> Syncing...';
-            
-            let updated = false;
-            for (let i = 0; i < db().accounts.length; i++) {
-                let acc = db().accounts[i];
-                if (acc.type.startsWith('asset_invest') && acc.ticker) {
-                    try {
-                        const target = encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${acc.ticker}`);
-                        const response = await fetch(`https://api.allorigins.win/get?url=${target}`);
-                        if (!response.ok) throw new Error('Network fail');
-                        const data = await response.json();
-                        const chartData = JSON.parse(data.contents);
-                        const livePrice = chartData.chart.result[0].meta.regularMarketPrice;
-                        
-                        if (livePrice && !isNaN(livePrice)) {
-                            acc.livePrice = livePrice;
-                            acc.balance = acc.qty * livePrice; 
-                            
-                            const today = new Date().toISOString().slice(0,10);
-                            if (!acc.history) acc.history = [];
-                            if (acc.history.length > 0 && acc.history[acc.history.length-1].date === today) {
-                                acc.history[acc.history.length-1].value = acc.balance;
-                            } else {
-                                acc.history.push({ date: today, value: acc.balance, invested: acc.investedAmount });
-                            }
-                            updated = true;
-                        }
-                    } catch (err) { console.error("Fetch failed: " + acc.ticker, err); }
-                }
+            if (isManual && btn) {
+                btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Fetching...';
+                lucide.createIcons();
             }
             
-            if (updated) { saveData(); renderAll(); } 
-            else { alert("Sync finished. Please ensure you provided valid Yahoo Finance Tickers (e.g. RELIANCE.NS)"); }
+            let updated = false;
+            const invests = db().accounts.filter(a => a.type.startsWith('asset_invest') && a.ticker);
             
-            if(btn) btn.innerHTML = '<i data-lucide="refresh-cw"></i> Sync Live';
-            lucide.createIcons();
+            if (invests.length === 0) {
+                if (btn) { btn.innerHTML = '<i data-lucide="radio" class="live-active"></i> Live Market'; lucide.createIcons(); }
+                return;
+            }
+
+            await Promise.allSettled(invests.map(async (acc) => {
+                try {
+                    const target = encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${acc.ticker}?interval=1m&range=1d&ts=${Date.now()}`);
+                    const proxyUrl = `https://corsproxy.io/?url=${target}`;
+                    
+                    const res = await fetch(proxyUrl);
+                    if (!res.ok) throw new Error('Network fail');
+                    const data = await res.json();
+                    
+                    const livePrice = data.chart.result[0].meta.regularMarketPrice;
+                    
+                    if (livePrice && !isNaN(livePrice)) {
+                        acc.livePrice = livePrice;
+                        acc.balance = acc.qty * livePrice; 
+                        
+                        const today = new Date().toISOString().slice(0,10);
+                        if (!acc.history) acc.history = [];
+                        if (acc.history.length > 0 && acc.history[acc.history.length-1].date === today) {
+                            acc.history[acc.history.length-1].value = acc.balance;
+                        } else {
+                            acc.history.push({ date: today, value: acc.balance, invested: acc.investedAmount });
+                        }
+                        updated = true;
+                    }
+                } catch (err) { 
+                    console.error("Live Sync failed for: " + acc.ticker, err); 
+                }
+            }));
+            
+            if (updated) { 
+                saveData(); 
+                invests.forEach(acc => {
+                    const balEl = document.getElementById(`invest-bal-${acc.id}`);
+                    const profEl = document.getElementById(`invest-prof-${acc.id}`);
+                    if (balEl && profEl) {
+                        const invested = acc.investedAmount || 0;
+                        const profit = acc.balance - invested;
+                        const profitPercent = invested > 0 ? (profit / invested) * 100 : 0;
+                        const pSign = profit >= 0 ? '+' : '';
+                        
+                        balEl.innerText = formatter.format(acc.balance);
+                        profEl.innerText = `${pSign}${formatter.format(profit)} (${profitPercent.toFixed(2)}%)`;
+                        profEl.style.color = profit >= 0 ? 'var(--success)' : 'var(--danger)';
+                    }
+                });
+                
+                renderDashboardTotalsOnly();
+                renderInvestmentsChart(true); 
+            }
+            
+            if (btn) {
+                btn.innerHTML = '<i data-lucide="radio" class="live-active"></i> Live Market';
+                lucide.createIcons();
+            }
+        }
+
+        // --- NEW DETAILS MODAL INJECTION LOGIC ---
+        function showDetails(type, id) {
+            let entity;
+            let title = "Details";
+            let html = "";
+            const body = document.getElementById('detailsModalBody');
+
+            if (type === 'liquid') {
+                entity = db().accounts.find(a => a.id === id);
+                if (!entity) return;
+                title = entity.name;
+                const isLiability = entity.type.startsWith('liability');
+                html = `
+                    <div class="stat-row"><span>Account Type</span><strong>${isLiability ? 'Credit Card' : 'Checking Account'}</strong></div>
+                    <div class="stat-row"><span>${isLiability ? 'Current Due' : 'Available Balance'}</span><strong style="font-size:24px; color:${isLiability ? 'var(--danger)' : 'var(--text-main)'}">${formatter.format(entity.balance)}</strong></div>
+                    ${entity.accNumber ? `<div class="stat-row"><span>Card / Acc Number</span><strong>•••• ${entity.accNumber.slice(-4)}</strong></div>` : ''}
+                    ${entity.expiry ? `<div class="stat-row"><span>Expiry Date</span><strong>${entity.expiry}</strong></div>` : ''}
+                    ${entity.cvv ? `<div class="stat-row"><span>CVV</span><strong>***</strong></div>` : ''}
+                `;
+            } else if (type === 'invest') {
+                entity = db().accounts.find(a => a.id === id);
+                if (!entity) return;
+                title = entity.name;
+                const invested = entity.investedAmount || 0;
+                const profit = entity.balance - invested;
+                const profitPercent = invested > 0 ? (profit / invested) * 100 : 0;
+                const pSign = profit >= 0 ? '+' : '';
+                const pColor = profit >= 0 ? 'var(--success)' : 'var(--danger)';
+                html = `
+                    <div class="stat-row"><span>Asset Class</span><strong>${entity.type.split('_')[2].toUpperCase()}</strong></div>
+                    ${entity.ticker ? `<div class="stat-row"><span>Ticker Symbol</span><strong>${entity.ticker}</strong></div>` : ''}
+                    <div class="stat-row"><span>Quantity Owned</span><strong>${entity.qty || '-'}</strong></div>
+                    <div class="stat-row"><span>Avg Buy Price</span><strong>${formatter.format(entity.avgPrice || 0)}</strong></div>
+                    <div class="stat-row"><span>Total Invested</span><strong>${formatter.format(invested)}</strong></div>
+                    <div class="stat-row"><span>Current Market Value</span><strong style="font-size:24px;">${formatter.format(entity.balance)}</strong></div>
+                    <div class="stat-row"><span>Unrealized P&L</span><strong style="color:${pColor}">${pSign}${formatter.format(profit)} (${profitPercent.toFixed(2)}%)</strong></div>
+                    ${entity.accNumber ? `<div class="stat-row"><span>Folio No.</span><strong>${entity.accNumber}</strong></div>` : ''}
+                    <div class="stat-row"><span>Last Synced</span><strong>${(entity.history && entity.history.length) ? new Date(entity.history[entity.history.length-1].date).toLocaleDateString('en-IN') : 'Never'}</strong></div>
+                `;
+            } else if (type === 'contract') {
+                entity = db().accounts.find(a => a.id === id);
+                if (!entity) return;
+                title = entity.name;
+                const isLoan = entity.type === 'liability_loan';
+                const p = entity.balance || 0, r = (entity.interestRate || 0)/100/12, n = entity.duration || 0;
+                let emiOrMaturity = 0, maturityDateStr = "ONGOING";
+                
+                if (entity.startDate && n > 0) {
+                    let md = new Date(entity.startDate); md.setMonth(md.getMonth() + n);
+                    maturityDateStr = md.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }).toUpperCase();
+                }
+                
+                if (isLoan && p > 0 && n > 0) emiOrMaturity = (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+                else if (!isLoan && p > 0 && n > 0) emiOrMaturity = p * Math.pow(1 + (entity.interestRate/100)/12, n);
+
+                html = `
+                    <div class="stat-row"><span>Contract Type</span><strong>${isLoan ? 'Active Loan / EMI' : 'Fixed Deposit'}</strong></div>
+                    ${entity.accNumber ? `<div class="stat-row"><span>Account No</span><strong>${entity.accNumber}</strong></div>` : ''}
+                    <div class="stat-row"><span>${isLoan ? 'Remaining Principal' : 'Deposit Principal'}</span><strong style="font-size:24px;">${formatter.format(p)}</strong></div>
+                    <div class="stat-row"><span>Interest Rate</span><strong>${entity.interestRate}% p.a.</strong></div>
+                    <div class="stat-row"><span>Tenure</span><strong>${n} Months</strong></div>
+                    <div class="stat-row"><span>${isLoan ? 'Monthly EMI' : 'Maturity Amount'}</span><strong>${formatter.format(emiOrMaturity)}</strong></div>
+                    <div class="stat-row"><span>Contract Ends</span><strong>${maturityDateStr}</strong></div>
+                `;
+            } else if (type === 'category') {
+                entity = db().categories.find(c => c.id === id);
+                if (!entity) return;
+                title = entity.name;
+                const currentMonth = new Date().getMonth();
+                const total = db().transactions.filter(tx => tx.categoryId === entity.id && new Date(tx.date).getMonth() === currentMonth).reduce((sum, tx) => sum + tx.amount, 0);
+                
+                html = `
+                    <div class="stat-row"><span>Type</span><strong>${entity.type === 'income' ? 'Income Source' : 'Expense Budget'}</strong></div>
+                    <div class="stat-row"><span>${entity.type === 'income' ? 'Earned this month' : 'Spent this month'}</span><strong style="font-size:24px; color:${entity.type === 'income' ? 'var(--success)' : 'var(--danger)'}">${formatter.format(total)}</strong></div>
+                    ${entity.type === 'expense' && entity.limit > 0 ? `<div class="stat-row"><span>Monthly Limit</span><strong>${formatter.format(entity.limit)}</strong></div><div class="stat-row"><span>Remaining Budget</span><strong>${formatter.format(entity.limit - total)}</strong></div>` : ''}
+                `;
+            }
+
+            document.getElementById('detailsModalTitle').innerText = title;
+            body.innerHTML = html;
+            openModal('detailsModal');
         }
 
         function generateGoalStrategy(goal) {
@@ -1014,11 +1165,23 @@
             if (el) el.classList.toggle('expanded');
         }
 
-        function renderDashboard() {
+        function renderDashboardTotalsOnly() {
             let totalAssets = 0, totalLiabilities = 0;
-            db().accounts.forEach(acc => { if (acc.type.startsWith('asset')) totalAssets += acc.balance; if (acc.type.startsWith('liability')) totalLiabilities += acc.balance; });
-            document.getElementById('totalNetWorth').innerText = formatter.format(totalAssets - totalLiabilities);
-            document.getElementById('totalAssets').innerText = formatter.format(totalAssets); document.getElementById('totalLiabilities').innerText = formatter.format(totalLiabilities);
+            db().accounts.forEach(acc => { 
+                if (acc.type.startsWith('asset')) totalAssets += acc.balance; 
+                if (acc.type.startsWith('liability')) totalLiabilities += acc.balance; 
+            });
+            const net = document.getElementById('totalNetWorth');
+            const assets = document.getElementById('totalAssets');
+            const liab = document.getElementById('totalLiabilities');
+            
+            if(net) net.innerText = formatter.format(totalAssets - totalLiabilities);
+            if(assets) assets.innerText = formatter.format(totalAssets);
+            if(liab) liab.innerText = formatter.format(totalLiabilities);
+        }
+
+        function renderDashboard() {
+            renderDashboardTotalsOnly();
 
             let expenseByCategory = {}; const currentMonth = new Date().getMonth();
             db().transactions.forEach(tx => {
@@ -1062,10 +1225,12 @@
                 const mask = acc.accNumber ? `•••• ${acc.accNumber.slice(-4)}` : brand.mask;
                 
                 const el = document.createElement('div'); el.className = 'fintech-card';
+                el.style.cursor = 'pointer'; 
+                el.onclick = () => showDetails('liquid', acc.id);
                 el.innerHTML = `
                     <div class="card-action-bar">
-                        <button class="card-action-btn edit" onclick="editEntity('liquid', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
-                        <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
+                        <button class="card-action-btn edit" onclick="event.stopPropagation(); editEntity('liquid', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
+                        <button class="card-action-btn del" onclick="event.stopPropagation(); deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
                     <div class="card-top">
                         <div style="flex:1; overflow:hidden;">
@@ -1107,11 +1272,13 @@
                 const mask = acc.accNumber ? `FOLIO •••• ${acc.accNumber.slice(-4)}` : brand.mask;
                 
                 const el = document.createElement('div'); el.className = 'fintech-card';
+                el.style.cursor = 'pointer'; 
+                el.onclick = () => showDetails('invest', acc.id);
                 el.innerHTML = `
                     <div class="card-action-bar">
-                        <button class="card-action-btn log" onclick="openSnapshotFor('${acc.id}')" title="Log Value"><i data-lucide="activity"></i></button>
-                        <button class="card-action-btn edit" onclick="editEntity('invest', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
-                        <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
+                        <button class="card-action-btn log" onclick="event.stopPropagation(); openSnapshotFor('${acc.id}')" title="Log Value"><i data-lucide="activity"></i></button>
+                        <button class="card-action-btn edit" onclick="event.stopPropagation(); editEntity('invest', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
+                        <button class="card-action-btn del" onclick="event.stopPropagation(); deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
                     <div class="card-top">
                         <div style="flex:1; overflow:hidden;">
@@ -1121,8 +1288,8 @@
                     </div>
                     <div style="margin-top: 15px;">
                         <div style="font-size: 10px; opacity: 0.8; text-transform: uppercase; font-weight: 700; margin-bottom: 2px;">Market Value</div>
-                        <div class="card-balance">${formatter.format(acc.balance)}</div>
-                        <div style="font-size:12px; font-weight:700; color: ${profit >= 0 ? '#34d399' : '#f87171'};">${pSign}${formatter.format(profit)} (${profitPercent.toFixed(2)}%)</div>
+                        <div class="card-balance" id="invest-bal-${acc.id}">${formatter.format(acc.balance)}</div>
+                        <div style="font-size:12px; font-weight:700; color: ${profit >= 0 ? 'var(--success)' : 'var(--danger)'}; transition: color 0.3s;" id="invest-prof-${acc.id}">${pSign}${formatter.format(profit)} (${profitPercent.toFixed(2)}%)</div>
                     </div>
                     <div class="card-bottom">
                         <div style="display:flex; gap:12px; align-items:center; flex:1; overflow:hidden;">
@@ -1135,7 +1302,7 @@
             renderInvestmentsChart();
         }
 
-        function renderInvestmentsChart() {
+        function renderInvestmentsChart(silentUpdate = false) {
             const filter = document.getElementById('investChartFilter').value, invests = db().accounts.filter(a => a.type.startsWith('asset_invest'));
             if (invests.length === 0) { if (investChartInstance) investChartInstance.destroy(); return; }
             let labels = [], investedData = [], currentData = [];
@@ -1160,6 +1327,14 @@
                         investedData.push(h.invested !== undefined ? h.invested : holding.investedAmount); currentData.push(h.value);
                     });
                 }
+            }
+
+            if (investChartInstance && silentUpdate) {
+                investChartInstance.data.labels = labels;
+                investChartInstance.data.datasets[0].data = investedData;
+                investChartInstance.data.datasets[1].data = currentData;
+                investChartInstance.update('none'); 
+                return;
             }
 
             const cTheme = getChartColors();
@@ -1192,10 +1367,12 @@
                 const mask = acc.accNumber ? `ACC •••• ${acc.accNumber.slice(-4)}` : brand.mask;
 
                 const el = document.createElement('div'); el.className = 'fintech-card';
+                el.style.cursor = 'pointer'; 
+                el.onclick = () => showDetails('contract', acc.id);
                 el.innerHTML = `
                     <div class="card-action-bar">
-                        <button class="card-action-btn edit" onclick="editEntity('contract', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
-                        <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
+                        <button class="card-action-btn edit" onclick="event.stopPropagation(); editEntity('contract', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
+                        <button class="card-action-btn del" onclick="event.stopPropagation(); deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
                     <div class="card-top">
                         <div style="flex:1; overflow:hidden;">
@@ -1228,7 +1405,9 @@
             incs.forEach(inc => {
                 const earned = db().transactions.filter(tx => tx.categoryId === inc.id && new Date(tx.date).getMonth() === currentMonth).reduce((sum, tx) => sum + tx.amount, 0);
                 const el = document.createElement('div'); el.className = 'glass-inner list-item'; el.style.padding = "15px";
-                el.innerHTML = `<div class="item-actions" style="top:12px;"><button class="action-btn edit" onclick="editEntity('category', '${inc.id}')"><i data-lucide="pencil"></i></button><button class="action-btn del" onclick="deleteCategory('${inc.id}')"><i data-lucide="trash-2"></i></button></div><div class="item-header" style="margin:0; padding-right:80px;"><div class="item-title-group"><h4>${inc.name}</h4></div><div class="item-amounts text-green" style="font-size:20px;">${formatter.format(earned)}</div></div>`;
+                el.style.cursor = 'pointer'; 
+                el.onclick = () => showDetails('category', inc.id);
+                el.innerHTML = `<div class="item-actions" style="top:12px;"><button class="action-btn edit" onclick="event.stopPropagation(); editEntity('category', '${inc.id}')"><i data-lucide="pencil"></i></button><button class="action-btn del" onclick="event.stopPropagation(); deleteCategory('${inc.id}')"><i data-lucide="trash-2"></i></button></div><div class="item-header" style="margin:0; padding-right:80px;"><div class="item-title-group"><h4>${inc.name}</h4></div><div class="item-amounts text-green" style="font-size:20px;">${formatter.format(earned)}</div></div>`;
                 incContainer.appendChild(el);
             });
 
@@ -1237,7 +1416,9 @@
                 const spent = db().transactions.filter(tx => tx.categoryId === budget.id && new Date(tx.date).getMonth() === currentMonth).reduce((sum, tx) => sum + tx.amount, 0);
                 let percentage = budget.limit > 0 ? Math.min((spent / budget.limit) * 100, 100) : 0, barColor = percentage > 90 ? 'var(--danger)' : percentage > 75 ? 'var(--warning)' : 'var(--sec-1)';
                 const el = document.createElement('div'); el.className = 'glass-inner list-item'; el.style.padding = "15px";
-                el.innerHTML = `<div class="item-actions" style="top:12px;"><button class="action-btn edit" onclick="editEntity('category', '${budget.id}')"><i data-lucide="pencil"></i></button><button class="action-btn del" onclick="deleteCategory('${budget.id}')"><i data-lucide="trash-2"></i></button></div><div class="item-header" style="padding-right:80px;"><div class="item-title-group"><h4>${budget.name}</h4></div><div class="item-amounts" style="font-size:18px;">${formatter.format(spent)} <span style="font-size:13px; color:var(--text-muted); font-weight:600;">/ ${budget.limit > 0 ? formatter.format(budget.limit) : 'No Limit'}</span></div></div>${budget.limit > 0 ? `<div class="progress-track"><div class="progress-fill" style="width: ${percentage}\%; background-color:${barColor}"></div></div>` : ''}`;
+                el.style.cursor = 'pointer'; 
+                el.onclick = () => showDetails('category', budget.id);
+                el.innerHTML = `<div class="item-actions" style="top:12px;"><button class="action-btn edit" onclick="event.stopPropagation(); editEntity('category', '${budget.id}')"><i data-lucide="pencil"></i></button><button class="action-btn del" onclick="event.stopPropagation(); deleteCategory('${budget.id}')"><i data-lucide="trash-2"></i></button></div><div class="item-header" style="padding-right:80px;"><div class="item-title-group"><h4>${budget.name}</h4></div><div class="item-amounts" style="font-size:18px;">${formatter.format(spent)} <span style="font-size:13px; color:var(--text-muted); font-weight:600;">/ ${budget.limit > 0 ? formatter.format(budget.limit) : 'No Limit'}</span></div></div>${budget.limit > 0 ? `<div class="progress-track"><div class="progress-fill" style="width: ${percentage}\%; background-color:${barColor}"></div></div>` : ''}`;
                 expContainer.appendChild(el);
             });
         }
@@ -1250,9 +1431,9 @@
                 const el = document.createElement('div'); el.className = `glass-inner list-item`; el.id = `goal-item-${goal.id}`;
                 el.innerHTML = `
                     <div class="item-actions">
-                        <button class="action-btn log" onclick="toggleStrategy('${goal.id}')" title="AI Strategy"><i data-lucide="lightbulb"></i></button>
-                        <button class="action-btn edit" onclick="editEntity('goal', '${goal.id}')"><i data-lucide="pencil"></i></button>
-                        <button class="action-btn del" onclick="deleteGoal('${goal.id}')"><i data-lucide="trash-2"></i></button>
+                        <button class="action-btn log" onclick="event.stopPropagation(); toggleStrategy('${goal.id}')" title="AI Strategy"><i data-lucide="lightbulb"></i></button>
+                        <button class="action-btn edit" onclick="event.stopPropagation(); editEntity('goal', '${goal.id}')"><i data-lucide="pencil"></i></button>
+                        <button class="action-btn del" onclick="event.stopPropagation(); deleteGoal('${goal.id}')"><i data-lucide="trash-2"></i></button>
                     </div>
                     <div class="item-header" style="padding-right: 120px;"><div class="item-title-group"><h4>${goal.name}</h4></div><div class="item-amounts" style="font-size:18px;">${formatter.format(goal.savedAmount || 0)} <span style="font-size:14px; color:var(--text-muted); font-weight:600;">/ ${formatter.format(goal.targetAmount)}</span></div></div>
                     <div class="progress-track"><div class="progress-fill" style="width: ${percentage}%; background-color: var(--success)"></div></div><div style="font-size:11px; color:var(--text-muted); text-align:right; margin-top:4px; font-weight:700; letter-spacing:0.5px;">${percentage.toFixed(0)}% REACHED</div>
@@ -1276,7 +1457,7 @@
                 if(tx.type === 'expense') { sign = '-'; colorClass = 'text-red'; icon = 'arrow-down-circle'; }
                 const el = document.createElement('div'); el.className = 'tx-item';
                 el.innerHTML = `
-                    <div class="item-actions" style="top:25px;"><button class="action-btn edit" onclick="editEntity('tx', '${tx.id}')"><i data-lucide="pencil"></i></button><button class="action-btn del" onclick="deleteTx('${tx.id}')"><i data-lucide="trash-2"></i></button></div>
+                    <div class="item-actions" style="top:25px;"><button class="action-btn edit" onclick="event.stopPropagation(); editEntity('tx', '${tx.id}')"><i data-lucide="pencil"></i></button><button class="action-btn del" onclick="event.stopPropagation(); deleteTx('${tx.id}')"><i data-lucide="trash-2"></i></button></div>
                     <div class="tx-info"><h5>${tx.note}</h5><span><i data-lucide="${icon}"></i> ${catName} • ${new Date(tx.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</span></div>
                     <div class="tx-amount ${colorClass}">${sign}${formatter.format(tx.amount)}</div>`;
                 container.appendChild(el);
@@ -1389,8 +1570,49 @@
             saveData(); renderAll(); closeModal('contractModal'); 
         });
         
-        function toggleTxType(type) { document.querySelectorAll('#txModal .type-btn').forEach(b => b.classList.remove('active')); document.querySelector(`#txModal .type-btn[data-type="${type}"]`).classList.add('active'); document.getElementById('txType').value = type; const stdFields = document.getElementById('txStandardFields'), trxFields = document.getElementById('txTransferFields'); if(type === 'transfer') { stdFields.style.display = 'none'; trxFields.style.display = 'block'; populateAccountSelect('txFromAccount'); populateAccountSelect('txToAccount'); } else { stdFields.style.display = 'block'; trxFields.style.display = 'none'; populateAccountSelect('txAccount'); document.getElementById('txAccountLabel').innerHTML = type === 'expense' ? '<i data-lucide="upload"></i> Paid From (Source)' : '<i data-lucide="download"></i> Received Into (Destination)'; const catSelect = document.getElementById('txCategory'); catSelect.innerHTML = ''; db().categories.filter(c => c.type === type).forEach(c => { const opt = document.createElement('option'); opt.value = c.id; opt.innerText = c.name; catSelect.appendChild(opt); }); lucide.createIcons(); } }
-        function populateAccountSelect(elementId) { const select = document.getElementById(elementId); select.innerHTML = ''; db().accounts.forEach(a => { const opt = document.createElement('option'); opt.value = a.id; opt.innerText = a.name + ` (${formatter.format(a.balance)})`; select.appendChild(opt); }); }
+        // Strict Account Filtering for Standard Transactions
+        function toggleTxType(type) { 
+            document.querySelectorAll('#txModal .type-btn').forEach(b => b.classList.remove('active')); 
+            document.querySelector(`#txModal .type-btn[data-type="${type}"]`).classList.add('active'); 
+            document.getElementById('txType').value = type; 
+            
+            const stdFields = document.getElementById('txStandardFields');
+            const trxFields = document.getElementById('txTransferFields'); 
+            
+            if(type === 'transfer') { 
+                stdFields.style.display = 'none'; 
+                trxFields.style.display = 'block'; 
+                populateAccountSelect('txFromAccount'); 
+                populateAccountSelect('txToAccount'); 
+            } else { 
+                stdFields.style.display = 'block'; 
+                trxFields.style.display = 'none'; 
+                populateAccountSelect('txAccount'); 
+                document.getElementById('txAccountLabel').innerHTML = type === 'expense' ? '<i data-lucide="upload"></i> Paid From (Source)' : '<i data-lucide="download"></i> Received Into (Destination)'; 
+                
+                const catSelect = document.getElementById('txCategory'); 
+                catSelect.innerHTML = ''; 
+                db().categories.filter(c => c.type === type).forEach(c => { 
+                    const opt = document.createElement('option'); 
+                    opt.value = c.id; 
+                    opt.innerText = c.name; 
+                    catSelect.appendChild(opt); 
+                }); 
+                lucide.createIcons(); 
+            } 
+        }
+
+        // Restricts standard transaction dropdowns to liquid accounts only
+        function populateAccountSelect(elementId) { 
+            const select = document.getElementById(elementId); 
+            select.innerHTML = ''; 
+            db().accounts.filter(a => a.type === 'asset_bank' || a.type === 'liability_cc').forEach(a => { 
+                const opt = document.createElement('option'); 
+                opt.value = a.id; 
+                opt.innerText = a.name + ` (${formatter.format(a.balance)})`; 
+                select.appendChild(opt); 
+            }); 
+        }
         
         document.getElementById('txForm').addEventListener('submit', (e) => { e.preventDefault(); const id = document.getElementById('txEditId').value, amount = parseFloat(document.getElementById('txAmount').value), note = document.getElementById('txNote').value, date = document.getElementById('txDate').value, type = document.getElementById('txType').value; if (isNaN(amount) || amount <= 0 || !note || !date) return; const txData = { amount, note, date, type }; if(type === 'transfer') { const fromId = document.getElementById('txFromAccount').value, toId = document.getElementById('txToAccount').value; if(!fromId || !toId || fromId === toId) return alert("Select distinct accounts."); txData.fromAccountId = fromId; txData.toAccountId = toId; } else { const categoryId = document.getElementById('txCategory').value, accountId = document.getElementById('txAccount').value; if(!categoryId || !accountId) return; txData.categoryId = categoryId; txData.accountId = accountId; } if(id) { const idx = db().transactions.findIndex(t => t.id === id); if(idx > -1) db().transactions[idx] = { ...db().transactions[idx], ...txData }; } else { txData.id = 'tx_' + Date.now(); db().transactions.push(txData); }
             if(type === 'income' || type === 'expense') { const acc = db().accounts.find(a=>a.id===txData.accountId); if(acc){ if(type==='income') acc.type.startsWith('asset') ? acc.balance+=amount : acc.balance-=amount; else acc.type.startsWith('asset') ? acc.balance-=amount : acc.balance+=amount; } } else if(type === 'transfer') { const fromAcc=db().accounts.find(a=>a.id===txData.fromAccountId), toAcc=db().accounts.find(a=>a.id===txData.toAccountId); if(fromAcc) fromAcc.type.startsWith('asset')?fromAcc.balance-=amount:fromAcc.balance+=amount; if(toAcc) toAcc.type.startsWith('asset')?toAcc.balance+=amount:toAcc.balance-=amount; }
@@ -1407,8 +1629,11 @@
         function deleteTx(id) { if(confirm("Delete transaction record?")) { db().transactions = db().transactions.filter(t => t.id !== id); saveData(); renderAll(); } }
 
         document.addEventListener('DOMContentLoaded', () => { 
-            initPWA(); // Initialize Web App Manifest 
-            initDynamicPills(); loadData(); renderAll(); 
+            initPWA(); 
+            initDynamicPills(); 
+            loadData(); 
+            renderAll(); 
+            startLiveSync(); 
             document.querySelectorAll('.nav-links a').forEach(anchor => { anchor.addEventListener('click', function (e) { e.preventDefault(); document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' }); }); });
         });
     </script>
