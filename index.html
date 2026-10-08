@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Paper | Wealth Tracker</title>
+    <title>Valour | Wealth Tracker</title>
     
     <link rel="icon" type="image/png" href="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,8 +32,10 @@
             --glass-blur: 40px;
             
             /* Hyper-Realistic Chrome Objects (Light) */
-            --chrome-grad-main: radial-gradient(circle at 35% 25%, #ffffff 0%, #cbd5e1 15%, #64748b 45%, #94a3b8 70%, #f1f5f9 100%);
-            --chrome-shadow-main: inset -20px -20px 40px rgba(15,23,42,0.3), inset 15px 15px 30px rgba(255,255,255,1), 0 30px 60px rgba(0,0,0,0.15);
+            --chrome-grad-1: radial-gradient(circle at 35% 25%, #ffffff 0%, #cbd5e1 15%, #64748b 45%, #94a3b8 70%, #f1f5f9 100%);
+            --chrome-shadow-1: inset -20px -20px 40px rgba(15,23,42,0.3), inset 15px 15px 30px rgba(255,255,255,1), 0 30px 60px rgba(0,0,0,0.15);
+            --chrome-grad-2: linear-gradient(135deg, #ffffff 0%, #e2e8f0 20%, #94a3b8 50%, #f8fafc 80%, #ffffff 100%);
+            --chrome-shadow-2: inset -20px -20px 50px rgba(15,23,42,0.3), inset 20px 20px 40px rgba(255,255,255,1), 0 30px 60px rgba(0,0,0,0.15);
             
             --sec-1: #0ea5e9;
             --sec-1-hover: #0284c7;
@@ -69,8 +71,11 @@
                 --glass-blur: 48px;
                 
                 /* Hyper-Realistic Dark Mercury / Liquid Metal */
-                --chrome-grad-main: radial-gradient(circle at 28% 28%, #ffffff 0%, #a3a3a3 6%, #1a1a1a 28%, #000000 65%, #2a2a2a 100%);
-                --chrome-shadow-main: inset -20px -20px 50px #000000, inset 12px 12px 35px rgba(255,255,255,0.7), inset -4px 4px 15px rgba(255,255,255,0.2), 0 40px 80px rgba(0,0,0,1);
+                --chrome-grad-1: radial-gradient(circle at 28% 28%, #ffffff 0%, #a3a3a3 6%, #1a1a1a 28%, #000000 65%, #2a2a2a 100%);
+                --chrome-shadow-1: inset -20px -20px 50px #000000, inset 12px 12px 35px rgba(255,255,255,0.7), inset -4px 4px 15px rgba(255,255,255,0.2), 0 40px 80px rgba(0,0,0,1);
+                
+                --chrome-grad-2: linear-gradient(115deg, #0f172a 0%, #475569 25%, #ffffff 48%, #1e293b 55%, #000000 100%);
+                --chrome-shadow-2: inset -30px -30px 60px #000000, inset 15px 15px 40px rgba(255,255,255,0.5), 0 40px 80px rgba(0,0,0,1);
                 
                 --sec-1: #38bdf8;
                 --sec-1-hover: #0ea5e9;
@@ -92,56 +97,36 @@
 
         body {
             font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; color: var(--text-main);
-            background-color: var(--bg-base); -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 120px;
+            background-color: transparent; /* Allows Chrome layer to paint correctly */
+            -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 120px;
         }
         body.modal-active { overflow: hidden; }
         
         /* Premium sleek icons globally */
         .lucide { stroke-width: 1.5px; }
 
-        /* --- HYPER-REALISTIC LIQUID METAL DROPS ENGINE --- */
+        /* --- HYPER-REALISTIC LIQUID METAL ENGINE --- */
         .chrome-canvas-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
             background: var(--bg-base); overflow: hidden; pointer-events: none;
-            transform: translateZ(0);
         }
 
-        .chrome-drop {
+        .chrome-shape {
             position: absolute;
-            background: var(--chrome-grad-main);
-            box-shadow: var(--chrome-shadow-main);
-            will-change: transform, border-radius, opacity;
+            will-change: transform, opacity;
             transition: opacity 0.8s ease-in-out;
-            animation: morphDrop 10s ease-in-out infinite alternate;
         }
 
-        body.animations-paused .chrome-drop {
-            opacity: 0 !important;
-            animation-play-state: paused !important;
-        }
+        body.animations-paused .chrome-shape { opacity: 0 !important; animation-play-state: paused !important; }
 
-        /* 12 Randomly Scattered & Sized Liquid Metal Blobs */
-        .drop-1 { width: 320px; height: 320px; top: 5%; left: 10%; animation: morphDrop 12s ease-in-out infinite alternate, floatA 24s linear infinite; }
-        .drop-2 { width: 180px; height: 180px; top: 25%; right: 15%; animation: morphDrop 9s ease-in-out infinite alternate-reverse, floatB 18s linear infinite; }
-        .drop-3 { width: 450px; height: 450px; bottom: -10%; left: -5%; animation: morphDrop 15s ease-in-out infinite alternate, floatC 30s linear infinite; }
-        .drop-4 { width: 120px; height: 120px; top: 45%; left: 35%; animation: morphDrop 8s ease-in-out infinite alternate-reverse, floatD 15s linear infinite; }
-        .drop-5 { width: 280px; height: 280px; bottom: 15%; right: -5%; animation: morphDrop 11s ease-in-out infinite alternate, floatA 22s linear infinite reverse; }
-        .drop-6 { width: 80px; height: 80px; top: 15%; right: 40%; animation: morphDrop 7s ease-in-out infinite alternate, floatC 12s linear infinite; }
-        .drop-7 { width: 150px; height: 150px; bottom: 35%; left: 15%; animation: morphDrop 10s ease-in-out infinite alternate-reverse, floatB 19s linear infinite; }
-        .drop-8 { width: 220px; height: 220px; top: -5%; right: -5%; animation: morphDrop 13s ease-in-out infinite alternate, floatD 26s linear infinite; }
+        /* 3 Distinct Sharp 3D Objects */
+        .shape-orb-1 { width: 550px; height: 550px; border-radius: 50%; background: var(--chrome-grad-1); box-shadow: var(--chrome-shadow-1); top: -10%; left: -15%; animation: floatOrb 22s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        .shape-pill-1 { width: 320px; height: 750px; border-radius: 160px; background: var(--chrome-grad-2); box-shadow: var(--chrome-shadow-2); bottom: -20%; right: -10%; animation: floatCapsule 28s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        .shape-orb-2 { width: 200px; height: 200px; border-radius: 50%; background: var(--chrome-grad-1); box-shadow: var(--chrome-shadow-1); top: 45%; left: 35%; animation: floatOrbSmall 18s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate-reverse; }
 
-        /* Morphing gives the illusion of liquid surface tension */
-        @keyframes morphDrop {
-            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-            50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; }
-            100% { border-radius: 30% 70% 50% 50% / 60% 40% 70% 30%; }
-        }
-
-        /* 3D Transform Drift Patterns */
-        @keyframes floatA { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 50% { transform: translate3d(8vw, 12vh, 0) rotate(45deg); } 100% { transform: translate3d(-5vw, 5vh, 0) rotate(90deg); } }
-        @keyframes floatB { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 50% { transform: translate3d(-10vw, -8vh, 0) rotate(-45deg); } 100% { transform: translate3d(5vw, -15vh, 0) rotate(-90deg); } }
-        @keyframes floatC { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(5vw, -5vh, 0) scale(1.1); } 100% { transform: translate3d(-8vw, 10vh, 0) scale(0.9); } }
-        @keyframes floatD { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-6vw, 6vh, 0) scale(0.85); } 100% { transform: translate3d(12vw, -12vh, 0) scale(1.15); } }
+        @keyframes floatOrb { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(15vw, 10vh, 0); } }
+        @keyframes floatCapsule { 0% { transform: translate3d(0, 0, 0) rotate(-15deg); } 100% { transform: translate3d(-10vw, -15vh, 0) rotate(5deg); } }
+        @keyframes floatOrbSmall { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-10vw, -10vh, 0); } }
 
         /* --- LIQUID GLASS CONTAINERS --- */
         .glass {
@@ -153,7 +138,6 @@
             background: var(--glass-card-bg); border: var(--glass-border); border-radius: var(--radius-inner);
             box-shadow: var(--glass-highlight); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .glass-inner:hover { transform: translateY(-2px); }
 
         /* Dynamic Morphing Nav */
         .b2b-pill-base {
@@ -176,7 +160,7 @@
         .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 13px; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
         .nav-links a:hover, .nav-links a.active { color: var(--sec-1); }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 110px 20px 40px; position: relative; z-index: 1; }
+        .container { max-width: 900px; margin: 0 auto; padding: 110px 20px 40px; position: relative; z-index: 10; }
 
         /* Profile Toggle */
         .top-controls-wrapper { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 0 auto 40px auto; max-width: 400px; }
@@ -231,7 +215,7 @@
         .chart-container h4 { font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; margin-bottom: 15px; color: var(--text-main); font-size: 20px;}
         .chart-wrapper { position: relative; width: 100%; height: 240px; }
 
-        /* --- SLEEK HORIZONTAL CARD CAROUSEL --- */
+        /* --- SLEEK HORIZONTAL FINTECH CARD CAROUSEL --- */
         .card-carousel { display: flex; gap: 16px; overflow-x: auto; padding: 6px 4px 24px 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .card-carousel::-webkit-scrollbar { display: none; }
 
@@ -251,16 +235,16 @@
             pointer-events: none; transform: rotate(20deg);
         }
 
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; }
-        .card-brand-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; line-height: 1; }
-        .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 4px; }
-        .card-chip { width: 34px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #d4af37 0%, #f9e8a2 50%, #aa820a 100%); border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.8); position: relative; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; overflow: hidden; }
+        .card-brand-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;}
+        .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .card-chip { width: 34px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #d4af37 0%, #f9e8a2 50%, #aa820a 100%); border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.8); position: relative; flex-shrink:0; margin-left:10px;}
         
-        .card-balance { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; line-height: 1.1; margin-top: 4px; z-index: 1; }
+        .card-balance { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; line-height: 1.1; margin-top: 4px; z-index: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
-        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; }
-        .card-number { font-family: 'Inter', monospace; font-size: 13px; font-weight: 600; opacity: 0.9; letter-spacing: 1.5px; }
-        .card-network-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; text-transform: uppercase; }
+        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; margin-top: auto; padding-top:10px; overflow: hidden;}
+        .card-number { font-family: 'Inter', monospace; font-size: 12px; font-weight: 600; opacity: 0.9; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-network-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; text-transform: uppercase; flex-shrink:0; margin-left: 10px;}
 
         .card-action-bar { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 2; opacity: 0; transition: opacity 0.2s ease; }
         .fintech-card:hover .card-action-bar { opacity: 1; }
@@ -279,11 +263,10 @@
         .item-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; opacity: 0; transition: opacity 0.2s, transform 0.2s; transform: translateX(10px); align-items: center; }
         .list-item:hover .item-actions { opacity: 1; transform: translateX(0); }
         .action-btn { background: var(--glass-card-bg); border: var(--glass-border); border-radius: 8px; font-size: 16px; cursor: pointer; color: var(--text-muted); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: var(--glass-shadow); backdrop-filter: blur(10px); }
-        .action-btn.edit:hover { color: #fff; background: var(--sec-1); border-color: var(--sec-1); }
+        .action-btn:hover { color: #fff; background: var(--sec-1); border-color: var(--sec-1); }
         .action-btn.del:hover { color: #fff; background: var(--danger); border-color: var(--danger); }
-        .action-btn.log:hover { color: #fff; background: var(--success); border-color: var(--success); }
         
-        /* Goal Strategy Box */
+        /* Goal Strategy Box (AI Logic) */
         .strategy-box { margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px; border: 1px dashed var(--glass-border); display: none; }
         .list-item.expanded .strategy-box { display: block; animation: fadeSlideUp 0.3s ease; }
         .strategy-box h5 { display: flex; align-items: center; gap: 6px; color: var(--sec-1); font-size: 13px; text-transform: uppercase; margin-bottom: 6px; }
@@ -369,22 +352,16 @@
         .type-btn.active { background: var(--sec-1); color: #fff; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         
         .empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        /* Monochrome Empty State Icons matching theme */
-        .empty-state .lucide { width: 44px; height: 44px; opacity: 0.8; color: var(--text-main); }
+        .empty-state .lucide { width: 48px; height: 48px; opacity: 0.8; color: var(--text-main); }
     </style>
 </head>
 <body>
 
-    <!-- Hyper-Realistic 3D Chrome Engine (Mercury Drops) -->
+    <!-- Hyper-Realistic 3D Chrome Engine -->
     <div class="chrome-canvas-wrapper">
-        <div class="chrome-drop drop-1"></div>
-        <div class="chrome-drop drop-2"></div>
-        <div class="chrome-drop drop-3"></div>
-        <div class="chrome-drop drop-4"></div>
-        <div class="chrome-drop drop-5"></div>
-        <div class="chrome-drop drop-6"></div>
-        <div class="chrome-drop drop-7"></div>
-        <div class="chrome-drop drop-8"></div>
+        <div class="chrome-sculpture chrome-orb-main"></div>
+        <div class="chrome-sculpture chrome-capsule"></div>
+        <div class="chrome-sculpture chrome-orb-small"></div>
     </div>
 
     <!-- Morphing Nav Structure -->
@@ -573,18 +550,31 @@
                         <option value="liability_cc">Credit Card (Liability)</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label><i data-lucide="palette"></i> Theme / Branding</label>
+                    <select id="liqBrand" class="form-control" onchange="document.getElementById('liqColorGroup').style.display = this.value === 'custom' ? 'block' : 'none'">
+                        <option value="auto">Auto-Detect (from Name)</option>
+                        <option value="hdfc">HDFC Bank</option>
+                        <option value="sbi">SBI</option>
+                        <option value="icici">ICICI Bank</option>
+                        <option value="axis">Axis Bank</option>
+                        <option value="amazon">Amazon Pay</option>
+                        <option value="custom">Custom Color...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="liqColorGroup" style="display:none;">
+                    <label><i data-lucide="paintbrush"></i> Custom Hex Color</label>
+                    <input type="color" id="liqColor" class="form-control" value="#222222">
+                </div>
+
                 <div class="form-group"><label><i data-lucide="building-2"></i> Bank / Card Name</label><input type="text" id="liqName" class="form-control" placeholder="e.g. HDFC Bank, SBI Card" required></div>
                 
                 <div class="form-group"><label><i data-lucide="hash"></i> Card / Account Number</label><input type="text" id="liqNumber" class="form-control" placeholder="•••• 1234 (Optional)"></div>
                 <div style="display:flex; gap:10px;">
                     <div class="form-group" style="flex:1;"><label><i data-lucide="calendar"></i> Expiry</label><input type="text" id="liqExpiry" class="form-control" placeholder="MM/YY"></div>
                     <div class="form-group" style="flex:1;"><label><i data-lucide="lock"></i> CVV</label><input type="password" id="liqCvv" class="form-control" placeholder="•••" maxlength="4"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label><i data-lucide="palette"></i> Custom Card Color</label>
-                    <input type="color" id="liqColor" class="form-control" value="#000000">
-                    <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;">Leave black to auto-apply brand colors.</small>
                 </div>
 
                 <div class="form-group"><label><i data-lucide="indian-rupee"></i> Current Balance</label><input type="number" step="0.01" id="liqBalance" class="form-control" placeholder="0.00" required></div>
@@ -610,6 +600,24 @@
                         <option value="asset_invest_gold">Gold / ETF</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label><i data-lucide="palette"></i> Theme / Branding</label>
+                    <select id="invBrand" class="form-control" onchange="document.getElementById('invColorGroup').style.display = this.value === 'custom' ? 'block' : 'none'">
+                        <option value="auto">Auto-Detect (from Name)</option>
+                        <option value="zerodha">Zerodha Broking</option>
+                        <option value="groww">Groww Invest</option>
+                        <option value="sbi">SBI Mutual Fund</option>
+                        <option value="hdfc">HDFC Mutual Fund</option>
+                        <option value="custom">Custom Color...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="invColorGroup" style="display:none;">
+                    <label><i data-lucide="paintbrush"></i> Custom Hex Color</label>
+                    <input type="color" id="invColor" class="form-control" value="#222222">
+                </div>
+
                 <div class="form-group"><label><i data-lucide="hash"></i> Ticker / Asset Name</label><input type="text" id="invName" class="form-control" placeholder="e.g. ASHOKLEY, BEL" required></div>
                 <div class="form-group"><label><i data-lucide="hash"></i> Folio / Account No</label><input type="text" id="invNumber" class="form-control" placeholder="Optional"></div>
                 
@@ -654,6 +662,24 @@
                         <option value="liability_loan">Loan / EMI (Liability)</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label><i data-lucide="palette"></i> Theme / Branding</label>
+                    <select id="cntBrand" class="form-control" onchange="document.getElementById('cntColorGroup').style.display = this.value === 'custom' ? 'block' : 'none'">
+                        <option value="auto">Auto-Detect (from Name)</option>
+                        <option value="hdfc">HDFC Bank</option>
+                        <option value="sbi">SBI</option>
+                        <option value="icici">ICICI Bank</option>
+                        <option value="axis">Axis Bank</option>
+                        <option value="custom">Custom Color...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="cntColorGroup" style="display:none;">
+                    <label><i data-lucide="paintbrush"></i> Custom Hex Color</label>
+                    <input type="color" id="cntColor" class="form-control" value="#222222">
+                </div>
+
                 <div class="form-group"><label><i data-lucide="building-2"></i> Provider / Bank Name</label><input type="text" id="cntName" class="form-control" placeholder="e.g. SBI Home Loan, HDFC FD" required></div>
                 <div class="form-group"><label><i data-lucide="hash"></i> Loan / FD Number</label><input type="text" id="cntNumber" class="form-control" placeholder="e.g. 54321098" required></div>
                 
@@ -706,27 +732,52 @@
     </div>
 
     <script>
-        // Init globally thin lucide icons
         lucide.createIcons();
 
-        // --- BRANDKIT RECOGNITION ENGINE ---
+        // --- BRANDKIT RECOGNITION ENGINE (STRICT TYPE LOGIC) ---
         const BrandKit = {
-            resolve: function(name = "", type = "", customColor = "#000000") {
-                if (customColor && customColor !== "#000000") {
-                    return { gradient: `linear-gradient(135deg, ${customColor} 0%, #1a1a1a 100%)`, textColor: "#ffffff", brand: name.toUpperCase(), network: type.includes('bank') ? "VISA" : "ASSET", mask: "•••• CUSTOM" };
+            library: {
+                "hdfc": { gradient: "linear-gradient(135deg, #004c8f 0%, #001a33 100%)", textColor: "#ffffff", brand: "HDFC BANK" },
+                "sbi": { gradient: "linear-gradient(135deg, #1f618d 0%, #154360 100%)", textColor: "#ffffff", brand: "STATE BANK OF INDIA" },
+                "icici": { gradient: "linear-gradient(135deg, #b03a2e 0%, #78281f 100%)", textColor: "#ffffff", brand: "ICICI BANK" },
+                "axis": { gradient: "linear-gradient(135deg, #870040 0%, #4a0023 100%)", textColor: "#ffffff", brand: "AXIS BANK" },
+                "amazon": { gradient: "linear-gradient(135deg, #232f3e 0%, #000000 100%)", textColor: "#ffffff", brand: "AMAZON PAY" },
+                "zerodha": { gradient: "linear-gradient(135deg, #387ed1 0%, #1f4e89 100%)", textColor: "#ffffff", brand: "ZERODHA" },
+                "groww": { gradient: "linear-gradient(135deg, #00d09c 0%, #007a5c 100%)", textColor: "#ffffff", brand: "GROWW" }
+            },
+            resolve: function(name = "", type = "", brandSelection = "auto", customColor = "#000000") {
+                const s = name.toLowerCase();
+                let match = null;
+
+                if (brandSelection === "custom" && customColor) {
+                    match = { gradient: `linear-gradient(135deg, ${customColor} 0%, #111111 100%)`, textColor: "#ffffff", brand: name.toUpperCase() };
+                } else if (brandSelection !== "auto" && this.library[brandSelection]) {
+                    match = { ...this.library[brandSelection], brand: name.toUpperCase() || this.library[brandSelection].brand };
+                } else {
+                    for (const [key, val] of Object.entries(this.library)) {
+                        if (s.includes(key)) { match = { ...val }; break; }
+                    }
+                    if (!match) {
+                        if(type.includes('gold')) match = { gradient: "linear-gradient(135deg, #d4af37 0%, #aa820a 50%, #795548 100%)", textColor: "#ffffff", brand: name.toUpperCase() };
+                        else if(type.includes('stock')) match = { gradient: "linear-gradient(135deg, #334155 0%, #0f172a 100%)", textColor: "#f8fafc", brand: name.toUpperCase() };
+                        else match = { gradient: "linear-gradient(135deg, #9e9282 0%, #6e6456 100%)", textColor: "#ffffff", brand: name.toUpperCase() || "VALOUR VAULT" };
+                    }
                 }
 
-                const s = name.toLowerCase();
-                if (s.includes("hdfc")) return { gradient: "linear-gradient(135deg, #004c8f 0%, #00264d 100%)", textColor: "#ffffff", brand: "HDFC BANK", network: "VISA", mask: "•••• 4352" };
-                if (s.includes("sbi") || s.includes("state bank")) return { gradient: "linear-gradient(135deg, #1f618d 0%, #154360 100%)", textColor: "#ffffff", brand: "STATE BANK OF INDIA", network: "MASTERCARD", mask: "•••• 2156" };
-                if (s.includes("icici")) return { gradient: "linear-gradient(135deg, #b03a2e 0%, #78281f 100%)", textColor: "#ffffff", brand: "ICICI BANK", network: "VISA", mask: "•••• 8921" };
-                if (s.includes("axis")) return { gradient: "linear-gradient(135deg, #870040 0%, #4a0023 100%)", textColor: "#ffffff", brand: "AXIS BANK", network: "RUPAY", mask: "•••• 6712" };
-                if (s.includes("zerodha") || s.includes("kite")) return { gradient: "linear-gradient(135deg, #387ed1 0%, #1f4e89 100%)", textColor: "#ffffff", brand: "ZERODHA BROKING", network: "EQUITY", mask: "ACC •••• 992" };
-                if (s.includes("groww")) return { gradient: "linear-gradient(135deg, #00d09c 0%, #007a5c 100%)", textColor: "#ffffff", brand: "GROWW INVEST", network: "MF/SIP", mask: "FOLIO •••• 104" };
-                if (s.includes("ashok") || s.includes("bel") || type.includes("stock")) return { gradient: "linear-gradient(135deg, #334155 0%, #0f172a 100%)", textColor: "#f8fafc", brand: name.toUpperCase(), network: "NSE/BSE", mask: "HOLDING • 100%" };
-                if (s.includes("gold") || type.includes("gold")) return { gradient: "linear-gradient(135deg, #d4af37 0%, #aa820a 50%, #795548 100%)", textColor: "#ffffff", brand: "24K GOLD BULLION", network: "ETF", mask: "99.9% PURITY" };
+                let network = "ASSET";
+                if (type === "liability_cc") {
+                    network = s.includes("amex") ? "AMEX" : (s.includes("rupay") ? "RUPAY" : (s.includes("master") || s.includes("amazon") ? "MASTERCARD" : "VISA"));
+                } else if (type === "asset_bank") network = "BANKING";
+                else if (type === "asset_invest_mf") network = "MUTUAL FUND";
+                else if (type === "asset_invest_stock") network = "EQUITY";
+                else if (type === "asset_invest_gold") network = "COMMODITY";
+                else if (type === "asset_fd") network = "DEPOSIT";
+                else if (type === "liability_loan") network = "LOAN";
+
+                let mask = "•••• " + (Math.floor(1000 + Math.random() * 9000));
+                if (type.includes("invest")) mask = "FOLIO/ACC";
                 
-                return { gradient: "linear-gradient(135deg, #9e9282 0%, #6e6456 100%)", textColor: "#ffffff", brand: name.toUpperCase() || "VALOUR VAULT", network: "MASTERCARD", mask: "•••• " + (Math.floor(1000 + Math.random() * 9000)) };
+                return { ...match, network, mask };
             }
         };
 
@@ -771,7 +822,7 @@
         }
 
         function loadData() {
-            const stored = localStorage.getItem('aazam_finance_apk_v16');
+            const stored = localStorage.getItem('aazam_finance_apk_v17');
             if (stored) { 
                 state = JSON.parse(stored); 
                 if(state.settings === undefined) state.settings = { animations: true };
@@ -781,7 +832,7 @@
                 state.profiles.personal.categories = [{ id: 'c1', name: 'Salary', type: 'income', limit: 0 }, { id: 'c4', name: 'Food & Dining', type: 'expense', limit: 15000 }, { id: 'c5', name: 'Sneakers & Drip', type: 'expense', limit: 25000 }];
                 state.profiles.personal.accounts = [
                     { id: 'a1', name: 'HDFC Checking', type: 'asset_bank', balance: 150000, accNumber: '1098' }, 
-                    { id: 'a2', name: 'SBI Credit Card', type: 'liability_cc', balance: 12500, accNumber: '4421' },
+                    { id: 'a2', name: 'Amazon Pay Credit Card', type: 'liability_cc', balance: 1968, accNumber: '3009', expiry: '01/29', cvv: '***' },
                     { id: 'a3', name: 'ASHOKLEY', type: 'asset_invest_stock', balance: 5072, investedAmount: 5224, history: [{ date: '2026-01-10', value: 5224, invested: 5224 }, { date: today, value: 5072, invested: 5224 }] },
                     { id: 'a4', name: 'BEL', type: 'asset_invest_stock', balance: 4917, investedAmount: 5036, history: [{ date: '2026-02-15', value: 5036, invested: 5036 }, { date: today, value: 4917, invested: 5036 }] }
                 ];
@@ -791,7 +842,7 @@
             saveData();
             applyAnimationState();
         }
-        function saveData() { localStorage.setItem('aazam_finance_apk_v16', JSON.stringify(state)); }
+        function saveData() { localStorage.setItem('aazam_finance_apk_v17', JSON.stringify(state)); }
 
         function toggleAnimation() {
             state.settings.animations = !state.settings.animations;
@@ -817,6 +868,7 @@
             saveData(); renderAll(); triggerProfileAnimation();
         }
 
+        // --- AI Strategy Engine ---
         function generateGoalStrategy(goal) {
             const currentMonth = new Date().getMonth();
             let monthInc = 0, monthExp = 0;
@@ -885,7 +937,7 @@
             if(liquids.length === 0){ container.innerHTML = '<div class="empty-state" style="width:100%;"><i data-lucide="wallet"></i> No liquid accounts setup.</div>'; return; }
             
             liquids.forEach(acc => {
-                const brand = BrandKit.resolve(acc.name, acc.type, acc.color);
+                const brand = BrandKit.resolve(acc.name, acc.type, acc.brandSelection, acc.color);
                 const isLiability = acc.type.startsWith('liability');
                 const mask = acc.accNumber ? `•••• ${acc.accNumber.slice(-4)}` : brand.mask;
                 
@@ -897,23 +949,23 @@
                         <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
                     <div class="card-top">
-                        <div>
+                        <div style="flex:1; overflow:hidden;">
                             <div class="card-brand-title">${brand.brand}</div>
                             <div class="card-tag">${isLiability ? 'CREDIT CARD' : 'CHECKING ACCOUNT'}</div>
                         </div>
                         <div class="card-chip"></div>
                     </div>
-                    <div>
-                        <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">${isLiability ? 'Current Due' : 'Balance'}</div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 10px; opacity: 0.8; text-transform: uppercase; font-weight: 700; margin-bottom: 2px;">${isLiability ? 'Current Due' : 'Balance'}</div>
                         <div class="card-balance">${formatter.format(acc.balance)}</div>
                     </div>
                     <div class="card-bottom">
-                        <div style="display:flex; gap:15px;">
+                        <div style="display:flex; gap:12px; align-items:center; flex:1; overflow:hidden;">
                             <div class="card-number">${mask}</div>
                             ${acc.expiry ? `<div class="card-number">${acc.expiry}</div>` : ''}
-                            ${acc.cvv ? `<div class="card-number">CVV •••</div>` : ''}
+                            ${acc.cvv ? `<div class="card-number">CVV ***</div>` : ''}
                         </div>
-                        <div class="card-network-logo" style="font-family:'Barlow Condensed'; font-weight:800; font-size:18px; letter-spacing:1px;">${brand.network}</div>
+                        <div class="card-network-logo">${brand.network}</div>
                     </div>`;
                 container.appendChild(el);
             });
@@ -927,10 +979,10 @@
             filterSelect.innerHTML = `<option value="all">Entire Portfolio</option>` + invests.map(inv => `<option value="${inv.id}">${inv.name} (${inv.type.split('_')[2].toUpperCase()})</option>`).join('');
             filterSelect.value = invests.some(i => i.id === currentSelected) ? currentSelected : 'all';
 
-            if(invests.length === 0){ container.innerHTML = '<div class="empty-state" style="width:100%;"><i data-lucide="trending-up"></i> No investments logged. Add Stocks, MFs, or Gold.</div>'; if(investChartInstance) investChartInstance.destroy(); return; }
+            if(invests.length === 0){ container.innerHTML = '<div class="empty-state" style="width:100%;"><i data-lucide="trending-up"></i> No investments logged.</div>'; if(investChartInstance) investChartInstance.destroy(); return; }
 
             invests.forEach(acc => {
-                const brand = BrandKit.resolve(acc.name, acc.type);
+                const brand = BrandKit.resolve(acc.name, acc.type, acc.brandSelection, acc.color);
                 const invested = acc.investedAmount || 0, profit = acc.balance - invested, profitPercent = invested > 0 ? (profit / invested) * 100 : 0;
                 const pSign = profit >= 0 ? '+' : '';
                 const mask = acc.accNumber ? `FOLIO •••• ${acc.accNumber.slice(-4)}` : brand.mask;
@@ -944,20 +996,21 @@
                         <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
                     <div class="card-top">
-                        <div>
+                        <div style="flex:1; overflow:hidden;">
                             <div class="card-brand-title">${brand.brand}</div>
                             <div class="card-tag">${acc.type.split('_')[2].toUpperCase()} ASSET</div>
                         </div>
-                        <div class="card-chip"></div>
                     </div>
-                    <div>
-                        <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">Market Value</div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 10px; opacity: 0.8; text-transform: uppercase; font-weight: 700; margin-bottom: 2px;">Market Value</div>
                         <div class="card-balance">${formatter.format(acc.balance)}</div>
                         <div style="font-size:12px; font-weight:700; color: ${profit >= 0 ? '#34d399' : '#f87171'};">${pSign}${formatter.format(profit)} (${profitPercent.toFixed(2)}%)</div>
                     </div>
                     <div class="card-bottom">
-                        <div class="card-number">${mask}</div>
-                        <div class="card-network-logo" style="font-family:'Barlow Condensed'; font-weight:800; font-size:18px;">${brand.network}</div>
+                        <div style="display:flex; gap:12px; align-items:center; flex:1; overflow:hidden;">
+                            <div class="card-number">${mask}</div>
+                        </div>
+                        <div class="card-network-logo">${brand.network}</div>
                     </div>`;
                 container.appendChild(el);
             });
@@ -1006,13 +1059,13 @@
             if(contracts.length === 0){ container.innerHTML = '<div class="empty-state" style="width:100%;"><i data-lucide="file-signature"></i> No active loans or FDs.</div>'; return; }
             
             contracts.forEach(acc => {
-                const brand = BrandKit.resolve(acc.name, acc.type);
+                const brand = BrandKit.resolve(acc.name, acc.type, acc.brandSelection, acc.color);
                 const isLoan = acc.type === 'liability_loan', p = acc.balance || 0, r = (acc.interestRate || 0) / 100 / 12, n = acc.duration || 0;
-                let emiOrMaturity = 0, maturityDateStr = "Ongoing";
+                let emiOrMaturity = 0, maturityDateStr = "ONGOING";
 
                 if (acc.startDate && n > 0) {
                     let md = new Date(acc.startDate); md.setMonth(md.getMonth() + n);
-                    maturityDateStr = md.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+                    maturityDateStr = md.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' }).toUpperCase();
                 }
 
                 if (isLoan && p > 0 && n > 0) { emiOrMaturity = (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1); } 
@@ -1028,23 +1081,22 @@
                         <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
                     <div class="card-top">
-                        <div>
+                        <div style="flex:1; overflow:hidden;">
                             <div class="card-brand-title">${brand.brand}</div>
                             <div class="card-tag">${isLoan ? 'ACTIVE LOAN / EMI' : 'FIXED DEPOSIT'}</div>
                         </div>
-                        <div class="card-chip"></div>
                     </div>
-                    <div>
-                        <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">${isLoan ? 'Remaining Principal' : 'Deposit Principal'}</div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 10px; opacity: 0.8; text-transform: uppercase; font-weight: 700; margin-bottom: 2px;">${isLoan ? 'Remaining Principal' : 'Deposit Principal'}</div>
                         <div class="card-balance">${formatter.format(p)}</div>
                         <div style="font-size:12px; font-weight:700; opacity:0.9;">${isLoan ? 'Monthly EMI: ' + formatter.format(emiOrMaturity) : 'Maturity Amt: ' + formatter.format(emiOrMaturity)}</div>
                     </div>
                     <div class="card-bottom">
-                        <div style="display:flex; gap:15px;">
+                        <div style="display:flex; gap:12px; align-items:center; flex:1; overflow:hidden;">
                             <div class="card-number">${mask}</div>
-                            <div class="card-number">ENDS ${maturityDateStr.toUpperCase()}</div>
+                            <div class="card-number">ENDS ${maturityDateStr}</div>
                         </div>
-                        <div class="card-network-logo" style="font-family:'Barlow Condensed'; font-weight:800; font-size:18px;">${acc.interestRate}%</div>
+                        <div class="card-network-logo">${acc.interestRate}%</div>
                     </div>`;
                 container.appendChild(el);
             });
@@ -1124,9 +1176,9 @@
             document.getElementById(id).classList.add('active'); document.body.classList.add('modal-active');
             if(id === 'txModal' && !document.getElementById('txEditId').value) { document.getElementById('txForm').reset(); document.getElementById('txDate').valueAsDate = new Date(); document.getElementById('txModalTitle').innerText = 'Add Transaction'; document.getElementById('txSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Log'; toggleTxType('expense'); } 
             else if (id === 'catModal' && !document.getElementById('catEditId').value) { document.getElementById('catForm').reset(); document.getElementById('catModalTitle').innerText = 'Add Category'; document.getElementById('catSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Category'; toggleCatType('expense'); }
-            else if (id === 'liquidModal' && !document.getElementById('liqEditId').value) { document.getElementById('liquidForm').reset(); document.getElementById('liqModalTitle').innerText = 'Add Liquid Account'; document.getElementById('liqSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Account'; }
-            else if (id === 'investModal' && !document.getElementById('invEditId').value) { document.getElementById('investForm').reset(); document.getElementById('invDate').valueAsDate = new Date(); document.getElementById('invModalTitle').innerText = 'Add Investment'; document.getElementById('invSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Holding'; }
-            else if (id === 'contractModal' && !document.getElementById('cntEditId').value) { document.getElementById('contractForm').reset(); document.getElementById('cntModalTitle').innerText = 'Add Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Contract'; }
+            else if (id === 'liquidModal' && !document.getElementById('liqEditId').value) { document.getElementById('liquidForm').reset(); document.getElementById('liqColorGroup').style.display = 'none'; document.getElementById('liqModalTitle').innerText = 'Add Liquid Account'; document.getElementById('liqSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Account'; }
+            else if (id === 'investModal' && !document.getElementById('invEditId').value) { document.getElementById('investForm').reset(); document.getElementById('invColorGroup').style.display = 'none'; document.getElementById('invDate').valueAsDate = new Date(); document.getElementById('invModalTitle').innerText = 'Add Investment'; document.getElementById('invSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Holding'; }
+            else if (id === 'contractModal' && !document.getElementById('cntEditId').value) { document.getElementById('contractForm').reset(); document.getElementById('cntColorGroup').style.display = 'none'; document.getElementById('cntDate').valueAsDate = new Date(); document.getElementById('cntModalTitle').innerText = 'Add Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Contract'; }
             else if (id === 'goalModal' && !document.getElementById('goalEditId').value) { document.getElementById('goalForm').reset(); document.getElementById('goalModalTitle').innerText = 'New Goal'; document.getElementById('goalSubmitBtn').innerHTML = '<i data-lucide="save"></i> Create Goal'; }
             else if (id === 'snapshotModal') { populateSnapshotHoldingDropdown(); document.getElementById('snapDate').valueAsDate = new Date(); }
             lucide.createIcons();
@@ -1150,15 +1202,18 @@
             let entity;
             if(type === 'liquid') {
                 entity = db().accounts.find(a => a.id === id); if(!entity) return; document.getElementById('liqEditId').value = id;
-                document.getElementById('liqType').value = entity.type; document.getElementById('liqName').value = entity.name; document.getElementById('liqBalance').value = entity.balance; document.getElementById('liqNumber').value = entity.accNumber || ''; document.getElementById('liqExpiry').value = entity.expiry || ''; document.getElementById('liqCvv').value = entity.cvv || ''; document.getElementById('liqColor').value = entity.color || '#000000';
+                document.getElementById('liqType').value = entity.type; document.getElementById('liqName').value = entity.name; document.getElementById('liqBalance').value = entity.balance; document.getElementById('liqNumber').value = entity.accNumber || ''; document.getElementById('liqExpiry').value = entity.expiry || ''; document.getElementById('liqCvv').value = entity.cvv || ''; 
+                document.getElementById('liqBrand').value = entity.brandSelection || 'auto'; document.getElementById('liqColor').value = entity.color || '#222222'; document.getElementById('liqColorGroup').style.display = entity.brandSelection === 'custom' ? 'block' : 'none';
                 document.getElementById('liqModalTitle').innerText = 'Edit Liquid Account'; document.getElementById('liqSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Account'; openModal('liquidModal');
             } else if(type === 'invest') {
                 entity = db().accounts.find(a => a.id === id); if(!entity) return; document.getElementById('invEditId').value = id;
                 document.getElementById('invType').value = entity.type; document.getElementById('invName').value = entity.name; document.getElementById('invNumber').value = entity.accNumber || ''; document.getElementById('invInvested').value = entity.investedAmount; document.getElementById('invBalance').value = entity.balance; document.getElementById('invDate').value = (entity.history && entity.history.length) ? entity.history[entity.history.length-1].date : new Date().toISOString().slice(0,10);
+                document.getElementById('invBrand').value = entity.brandSelection || 'auto'; document.getElementById('invColor').value = entity.color || '#222222'; document.getElementById('invColorGroup').style.display = entity.brandSelection === 'custom' ? 'block' : 'none';
                 document.getElementById('invModalTitle').innerText = 'Edit Investment'; document.getElementById('invSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Holding'; openModal('investModal');
             } else if(type === 'contract') {
                 entity = db().accounts.find(a => a.id === id); if(!entity) return; document.getElementById('cntEditId').value = id;
                 document.getElementById('cntType').value = entity.type; document.getElementById('cntName').value = entity.name; document.getElementById('cntNumber').value = entity.accNumber || ''; document.getElementById('cntBalance').value = entity.balance; document.getElementById('cntRate').value = entity.interestRate; document.getElementById('cntDuration').value = entity.duration; document.getElementById('cntDate').value = entity.startDate || new Date().toISOString().slice(0,10);
+                document.getElementById('cntBrand').value = entity.brandSelection || 'auto'; document.getElementById('cntColor').value = entity.color || '#222222'; document.getElementById('cntColorGroup').style.display = entity.brandSelection === 'custom' ? 'block' : 'none';
                 document.getElementById('cntModalTitle').innerText = 'Edit Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Contract'; openModal('contractModal');
             } else if (type === 'category') {
                 entity = db().categories.find(c => c.id === id); if(!entity) return; document.getElementById('catEditId').value = id;
@@ -1179,28 +1234,28 @@
         // --- Form Submissions ---
         document.getElementById('liquidForm').addEventListener('submit', (e) => { 
             e.preventDefault(); const id = document.getElementById('liqEditId').value, type = document.getElementById('liqType').value, name = document.getElementById('liqName').value, balance = parseFloat(document.getElementById('liqBalance').value); 
-            const accNumber = document.getElementById('liqNumber').value, expiry = document.getElementById('liqExpiry').value, cvv = document.getElementById('liqCvv').value, color = document.getElementById('liqColor').value;
+            const accNumber = document.getElementById('liqNumber').value, expiry = document.getElementById('liqExpiry').value, cvv = document.getElementById('liqCvv').value, brandSelection = document.getElementById('liqBrand').value, color = document.getElementById('liqColor').value;
             if(!name || isNaN(balance)) return; 
-            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, balance, accNumber, expiry, cvv, color }; } 
-            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, balance, accNumber, expiry, cvv, color }); } 
+            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, balance, accNumber, expiry, cvv, brandSelection, color }; } 
+            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, balance, accNumber, expiry, cvv, brandSelection, color }); } 
             saveData(); renderAll(); closeModal('liquidModal'); 
         });
 
         document.getElementById('investForm').addEventListener('submit', (e) => { 
-            e.preventDefault(); const id = document.getElementById('invEditId').value, type = document.getElementById('invType').value, name = document.getElementById('invName').value, accNumber = document.getElementById('invNumber').value, balance = parseFloat(document.getElementById('invBalance').value), investedAmount = parseFloat(document.getElementById('invInvested').value), date = document.getElementById('invDate').value; 
+            e.preventDefault(); const id = document.getElementById('invEditId').value, type = document.getElementById('invType').value, name = document.getElementById('invName').value, accNumber = document.getElementById('invNumber').value, balance = parseFloat(document.getElementById('invBalance').value), investedAmount = parseFloat(document.getElementById('invInvested').value), date = document.getElementById('invDate').value, brandSelection = document.getElementById('invBrand').value, color = document.getElementById('invColor').value; 
             if(!name || isNaN(balance) || isNaN(investedAmount)) return; 
-            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) { const existing = db().accounts[idx]; let history = existing.history || []; history.push({ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }); db().accounts[idx] = { ...existing, type, name, accNumber, balance, investedAmount, history }; } } 
-            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, balance, investedAmount, history: [{ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }] }); } 
+            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) { const existing = db().accounts[idx]; let history = existing.history || []; history.push({ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }); db().accounts[idx] = { ...existing, type, name, accNumber, balance, investedAmount, brandSelection, color, history }; } } 
+            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, balance, investedAmount, brandSelection, color, history: [{ date: date || new Date().toISOString().slice(0,10), value: balance, invested: investedAmount }] }); } 
             saveData(); renderAll(); closeModal('investModal'); 
         });
 
         document.getElementById('snapshotForm').addEventListener('submit', (e) => { e.preventDefault(); const holdingId = document.getElementById('snapHoldingId').value, date = document.getElementById('snapDate').value, newVal = parseFloat(document.getElementById('snapValue').value), newInvRaw = document.getElementById('snapInvested').value; if(!holdingId || !date || isNaN(newVal)) return; const holding = db().accounts.find(a => a.id === holdingId); if(holding) { const newInv = newInvRaw !== "" ? parseFloat(newInvRaw) : holding.investedAmount; holding.balance = newVal; holding.investedAmount = newInv; if(!holding.history) holding.history = []; holding.history.push({ date: date, value: newVal, invested: newInv }); saveData(); renderAll(); closeModal('snapshotModal'); } });
         
         document.getElementById('contractForm').addEventListener('submit', (e) => { 
-            e.preventDefault(); const id = document.getElementById('cntEditId').value, type = document.getElementById('cntType').value, name = document.getElementById('cntName').value, accNumber = document.getElementById('cntNumber').value, startDate = document.getElementById('cntDate').value, balance = parseFloat(document.getElementById('cntBalance').value), interestRate = parseFloat(document.getElementById('cntRate').value), duration = parseInt(document.getElementById('cntDuration').value); 
+            e.preventDefault(); const id = document.getElementById('cntEditId').value, type = document.getElementById('cntType').value, name = document.getElementById('cntName').value, accNumber = document.getElementById('cntNumber').value, startDate = document.getElementById('cntDate').value, balance = parseFloat(document.getElementById('cntBalance').value), interestRate = parseFloat(document.getElementById('cntRate').value), duration = parseInt(document.getElementById('cntDuration').value), brandSelection = document.getElementById('cntBrand').value, color = document.getElementById('cntColor').value; 
             if(!name || isNaN(balance)) return; 
-            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, accNumber, startDate, balance, interestRate, duration }; } 
-            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, startDate, balance, interestRate, duration }); } 
+            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, accNumber, startDate, balance, interestRate, duration, brandSelection, color }; } 
+            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, startDate, balance, interestRate, duration, brandSelection, color }); } 
             saveData(); renderAll(); closeModal('contractModal'); 
         });
         
