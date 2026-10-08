@@ -240,9 +240,15 @@
         .fintech-card {
             min-width: 270px; max-width: 320px; min-height: 200px; border-radius: 22px; padding: 22px;
             scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 15px;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none; overflow: hidden;
+            
+            /* Glass styling replacing specific gradients */
+            background: var(--glass-card-bg), var(--noise-url); background-blend-mode: overlay;
+            backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
+            border: var(--glass-border); 
+            box-shadow: var(--glass-shadow), var(--glass-highlight);
+            color: var(--text-main);
         }
         .fintech-card:hover { transform: translateY(-4px) scale(1.02); }
 
@@ -376,8 +382,8 @@
 </head>
 <body>
 
-    <!-- Hyper-Realistic 3D Valour Coin Engine -->
-    <div class="chrome-canvas-wrapper">
+    <!-- Hyper-Realistic 3D Valour Coin Engine - UPDATED WRAPPER CLASS -->
+    <div class="motion-bg">
         <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-1" alt="">
         <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-2" alt="">
         <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-3" alt="">
@@ -1015,7 +1021,6 @@
                 const mask = acc.accNumber ? `•••• ${acc.accNumber.slice(-4)}` : brand.mask;
                 
                 const el = document.createElement('div'); el.className = 'fintech-card';
-                el.style.background = brand.gradient; el.style.color = brand.textColor;
                 el.innerHTML = `
                     <div class="card-action-bar">
                         <button class="card-action-btn edit" onclick="editEntity('liquid', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
@@ -1061,7 +1066,6 @@
                 const mask = acc.accNumber ? `FOLIO •••• ${acc.accNumber.slice(-4)}` : brand.mask;
                 
                 const el = document.createElement('div'); el.className = 'fintech-card';
-                el.style.background = brand.gradient; el.style.color = brand.textColor;
                 el.innerHTML = `
                     <div class="card-action-bar">
                         <button class="card-action-btn log" onclick="openSnapshotFor('${acc.id}')" title="Log Value"><i data-lucide="activity"></i></button>
@@ -1147,7 +1151,6 @@
                 const mask = acc.accNumber ? `ACC •••• ${acc.accNumber.slice(-4)}` : brand.mask;
 
                 const el = document.createElement('div'); el.className = 'fintech-card';
-                el.style.background = brand.gradient; el.style.color = brand.textColor;
                 el.innerHTML = `
                     <div class="card-action-bar">
                         <button class="card-action-btn edit" onclick="editEntity('contract', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
