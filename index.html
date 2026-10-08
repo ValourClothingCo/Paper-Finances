@@ -17,23 +17,26 @@
     <style>
         /* --- DYNAMIC SYSTEM THEME (LIGHT & DARK) --- */
         :root {
+            /* SVG Noise for physical glass texture */
+            --noise-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+
             /* Light Theme Defaults */
-            --bg-base: #f1f5f9;
+            --bg-base: #f8fafc;
             --text-main: #020617;
             --text-muted: #475569;
             
-            /* Glass Refraction */
-            --glass-bg: rgba(255, 255, 255, 0.4);
-            --glass-card-bg: rgba(255, 255, 255, 0.65);
-            --glass-nav-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.9);
-            --glass-highlight: inset 1px 1px 1px rgba(255, 255, 255, 0.9);
-            --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
-            --glass-blur: 40px;
+            /* Premium Liquid Glass Refraction (Light) */
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-card-bg: rgba(255, 255, 255, 0.35);
+            --glass-nav-bg: rgba(255, 255, 255, 0.5);
+            --glass-filter: blur(40px) saturate(220%) brightness(1.1) contrast(1.05);
             
-            /* Hyper-Realistic Chrome Objects (Light) */
-            --chrome-grad-main: radial-gradient(circle at 35% 25%, #ffffff 0%, #cbd5e1 15%, #64748b 45%, #94a3b8 70%, #f1f5f9 100%);
-            --chrome-shadow-main: inset -20px -20px 40px rgba(15,23,42,0.3), inset 15px 15px 30px rgba(255,255,255,1), 0 30px 60px rgba(0,0,0,0.15);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+            --glass-highlight: inset 1px 1px 2px rgba(255, 255, 255, 0.9), inset -1px -1px 2px rgba(0,0,0,0.02);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            
+            --coin-opacity: 0.9;
+            --coin-shadow: 0 30px 60px rgba(0,0,0,0.15);
             
             --sec-1: #0ea5e9;
             --sec-1-hover: #0284c7;
@@ -41,7 +44,7 @@
             --danger: #ef4444;
             --warning: #f59e0b;
             
-            /* Charts (Monochrome Switching) */
+            /* Charts */
             --chart-line: #000000; 
             --chart-fill: rgba(0, 0, 0, 0.05);
             --chart-grid: rgba(0, 0, 0, 0.05);
@@ -59,18 +62,18 @@
                 --text-main: #ffffff;
                 --text-muted: #94a3b8;
                 
-                /* Glass Refraction */
-                --glass-bg: rgba(20, 20, 20, 0.35);
-                --glass-card-bg: rgba(30, 30, 30, 0.45);
-                --glass-nav-bg: rgba(10, 10, 10, 0.65);
-                --glass-border: 1px solid rgba(255, 255, 255, 0.12);
-                --glass-highlight: inset 1px 1px 2px rgba(255, 255, 255, 0.15);
-                --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-                --glass-blur: 48px;
+                /* Premium Liquid Glass Refraction (Dark) */
+                --glass-bg: rgba(10, 15, 20, 0.25);
+                --glass-card-bg: rgba(25, 30, 40, 0.35);
+                --glass-nav-bg: rgba(5, 5, 5, 0.5);
+                --glass-filter: blur(48px) saturate(180%) brightness(1.2) contrast(1.1);
                 
-                /* Hyper-Realistic Dark Mercury / Liquid Metal */
-                --chrome-grad-main: radial-gradient(circle at 28% 28%, #ffffff 0%, #a3a3a3 6%, #1a1a1a 28%, #000000 65%, #2a2a2a 100%);
-                --chrome-shadow-main: inset -20px -20px 50px #000000, inset 12px 12px 35px rgba(255,255,255,0.7), inset -4px 4px 15px rgba(255,255,255,0.2), 0 40px 80px rgba(0,0,0,1);
+                --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+                --glass-highlight: inset 1px 1px 1px rgba(255, 255, 255, 0.15), inset -1px -1px 2px rgba(0,0,0,0.8);
+                --glass-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+                
+                --coin-opacity: 0.85;
+                --coin-shadow: 0 40px 80px rgba(0,0,0,0.8);
                 
                 --sec-1: #38bdf8;
                 --sec-1-hover: #0ea5e9;
@@ -78,7 +81,7 @@
                 --danger: #f87171;
                 --warning: #fbbf24;
                 
-                /* Charts (Monochrome Switching) */
+                /* Charts */
                 --chart-line: #ffffff; 
                 --chart-fill: rgba(255, 255, 255, 0.08);
                 --chart-grid: rgba(255, 255, 255, 0.05);
@@ -99,50 +102,51 @@
         /* Premium sleek icons globally */
         .lucide { stroke-width: 1.5px; }
 
-        /* --- HYPER-REALISTIC LIQUID METAL DROPS ENGINE --- */
-        .chrome-canvas-wrapper {
+        /* --- VALOUR COIN BACKGROUND ENGINE --- */
+        .motion-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
             background: var(--bg-base); overflow: hidden; pointer-events: none;
-            transform: translateZ(0);
+            transform: translateZ(0); /* Hardware acceleration */
         }
 
-        .chrome-drop {
+        .valour-coin {
             position: absolute;
-            background: var(--chrome-grad-main);
-            box-shadow: var(--chrome-shadow-main);
-            will-change: transform, border-radius, opacity;
+            opacity: var(--coin-opacity);
+            filter: drop-shadow(var(--coin-shadow));
+            will-change: transform, opacity;
             transition: opacity 0.8s ease-in-out;
-            animation: morphDrop 10s ease-in-out infinite alternate;
+            user-select: none; pointer-events: none;
+            /* Object-fit ensures the image scales perfectly without distortion */
+            object-fit: contain; 
         }
 
-        body.animations-paused .chrome-drop { opacity: 0 !important; animation-play-state: paused !important; }
+        body.animations-paused .valour-coin { opacity: 0 !important; animation-play-state: paused !important; }
 
-        /* Randomly Scattered Liquid Metal Blobs */
-        .drop-1 { width: 320px; height: 320px; top: 5%; left: 10%; animation: morphDrop 12s ease-in-out infinite alternate, floatA 24s linear infinite; }
-        .drop-2 { width: 180px; height: 180px; top: 25%; right: 15%; animation: morphDrop 9s ease-in-out infinite alternate-reverse, floatB 18s linear infinite; }
-        .drop-3 { width: 450px; height: 450px; bottom: -10%; left: -5%; animation: morphDrop 15s ease-in-out infinite alternate, floatC 30s linear infinite; }
-        .drop-4 { width: 120px; height: 120px; top: 45%; left: 35%; animation: morphDrop 8s ease-in-out infinite alternate-reverse, floatD 15s linear infinite; }
-        .drop-5 { width: 280px; height: 280px; bottom: 15%; right: -5%; animation: morphDrop 11s ease-in-out infinite alternate, floatA 22s linear infinite reverse; }
+        /* 5 Balanced Valour Coins floating in random 3D space */
+        .coin-1 { width: 350px; top: -5%; left: 5%; animation: float1 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        .coin-2 { width: 280px; bottom: 5%; right: -5%; animation: float2 28s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        .coin-3 { width: 450px; top: 35%; left: 35%; animation: float3 32s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        .coin-4 { width: 180px; top: 15%; right: 15%; animation: float4 20s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        .coin-5 { width: 220px; bottom: 15%; left: 10%; animation: float5 24s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
 
-        @keyframes morphDrop {
-            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-            50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; }
-            100% { border-radius: 30% 70% 50% 50% / 60% 40% 70% 30%; }
-        }
-
-        @keyframes floatA { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 50% { transform: translate3d(8vw, 12vh, 0) rotate(45deg); } 100% { transform: translate3d(-5vw, 5vh, 0) rotate(90deg); } }
-        @keyframes floatB { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 50% { transform: translate3d(-10vw, -8vh, 0) rotate(-45deg); } 100% { transform: translate3d(5vw, -15vh, 0) rotate(-90deg); } }
-        @keyframes floatC { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(5vw, -5vh, 0) scale(1.1); } 100% { transform: translate3d(-8vw, 10vh, 0) scale(0.9); } }
-        @keyframes floatD { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-6vw, 6vh, 0) scale(0.85); } 100% { transform: translate3d(12vw, -12vh, 0) scale(1.15); } }
+        /* Butter-smooth translate3d keyframes */
+        @keyframes float1 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(10vw, 15vh, 0) rotate(35deg); } }
+        @keyframes float2 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(-15vw, -10vh, 0) rotate(-45deg); } }
+        @keyframes float3 { 0% { transform: translate3d(0, 0, 0) scale3d(1,1,1); } 100% { transform: translate3d(-8vw, 12vh, 0) scale3d(1.15,1.15,1) rotate(15deg); } }
+        @keyframes float4 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(-12vw, 20vh, 0) rotate(-60deg); } }
+        @keyframes float5 { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 100% { transform: translate3d(15vw, -15vh, 0) rotate(40deg); } }
 
         /* --- LIQUID GLASS CONTAINERS --- */
         .glass {
-            background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)) saturate(160%); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+            background: var(--glass-bg), var(--noise-url); background-blend-mode: overlay;
+            backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             border: var(--glass-border); box-shadow: var(--glass-shadow), var(--glass-highlight); border-radius: var(--radius-panel);
         }
 
         .glass-inner {
-            background: var(--glass-card-bg); border: var(--glass-border); border-radius: var(--radius-inner);
+            background: var(--glass-card-bg), var(--noise-url); background-blend-mode: overlay;
+            backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
+            border: var(--glass-border); border-radius: var(--radius-inner);
             box-shadow: var(--glass-highlight); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-inner:hover { transform: translateY(-2px); }
@@ -151,7 +155,8 @@
         .b2b-pill-base {
             position: fixed; top: 20px; left: 0; right: 0; margin: 0 auto; z-index: 1000;
             padding: 12px 25px; border-radius: var(--radius-pill); display: flex; justify-content: center; align-items: center;
-            background: var(--glass-nav-bg); backdrop-filter: blur(35px) saturate(160%); -webkit-backdrop-filter: blur(35px) saturate(160%);
+            background: var(--glass-nav-bg), var(--noise-url); background-blend-mode: overlay;
+            backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             border: var(--glass-border); box-shadow: 0 10px 35px rgba(0,0,0,0.25), var(--glass-highlight);
             will-change: width, transform; backface-visibility: hidden; transform: translateZ(0); 
         }
@@ -167,16 +172,15 @@
         .nav-links::-webkit-scrollbar { display: none; }
         .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 13px; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
         .nav-links a:hover, .nav-links a.active { color: var(--sec-1); }
-        .nav-links a .lucide { width: 16px; height: 16px; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 110px 20px 40px; position: relative; z-index: 1; }
+        .container { max-width: 900px; margin: 0 auto; padding: 110px 20px 40px; position: relative; z-index: 10; }
 
         /* Profile Toggle */
         .top-controls-wrapper { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 0 auto 40px auto; max-width: 400px; }
         
         .profile-toggle {
             display: flex; background: var(--glass-card-bg); border: var(--glass-border); border-radius: var(--radius-pill);
-            padding: 6px; flex: 1; box-shadow: var(--glass-shadow), var(--glass-highlight); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            padding: 6px; flex: 1; box-shadow: var(--glass-shadow), var(--glass-highlight); backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
         }
         .profile-toggle button {
             flex: 1; background: transparent; border: none; padding: 10px; border-radius: var(--radius-pill); cursor: pointer;
@@ -187,7 +191,7 @@
 
         .anim-toggle-btn {
             width: 46px; height: 46px; border-radius: 50%; background: var(--glass-card-bg); border: var(--glass-border);
-            box-shadow: var(--glass-shadow), var(--glass-highlight); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            box-shadow: var(--glass-shadow), var(--glass-highlight); backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
             display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; flex-shrink: 0;
         }
         .anim-toggle-btn:hover { transform: scale(1.05); background: var(--sec-1); color: #fff; border-color: var(--sec-1); box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
@@ -201,9 +205,10 @@
         .btn-small {
             background: var(--glass-card-bg); border: var(--glass-border); padding: 8px 18px; border-radius: var(--radius-pill);
             font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-main); cursor: pointer;
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 4px 12px rgba(0,0,0,0.1), var(--glass-highlight);
+            backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter); box-shadow: 0 4px 12px rgba(0,0,0,0.1), var(--glass-highlight);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 8px;
         }
+        .btn-small .lucide { width: 16px; height: 16px; color: var(--sec-1); }
         .btn-small:hover { background: var(--sec-1); color: #fff; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3); border-color: transparent; }
         .btn-small:hover .lucide { color: #fff; }
 
@@ -241,7 +246,6 @@
         }
         .fintech-card:hover { transform: translateY(-4px) scale(1.02); }
 
-        /* Metallic Sheen Overlay */
         .fintech-card::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 45%, rgba(255,255,255,0) 60%);
@@ -256,7 +260,8 @@
         .card-balance { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; line-height: 1.1; margin-top: 4px; z-index: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         
         .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; margin-top: auto; padding-top: 10px; width: 100%; }
-        .card-number { font-family: 'Inter', monospace; font-size: 12px; font-weight: 600; opacity: 0.9; letter-spacing: 1px; white-space: nowrap; }
+        .card-details-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .card-number { font-family: 'Inter', monospace; font-size: 12px; font-weight: 600; opacity: 0.9; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-network-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; text-transform: uppercase; flex-shrink:0; margin-left: auto; text-align: right; }
 
         .card-action-bar { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 2; opacity: 0; transition: opacity 0.2s ease; }
@@ -321,7 +326,8 @@
         }
         .modal-content::before {
             content:''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: var(--glass-bg); backdrop-filter: blur(48px); border-radius: inherit;
+            background: var(--glass-bg), var(--noise-url); background-blend-mode: overlay;
+            backdrop-filter: blur(48px); border-radius: inherit;
         }
         .modal-overlay.active .modal-content { transform: translateY(0); }
 
@@ -370,16 +376,13 @@
 </head>
 <body>
 
-    <!-- Hyper-Realistic 3D Liquid Chrome Engine -->
+    <!-- Hyper-Realistic 3D Valour Coin Engine -->
     <div class="chrome-canvas-wrapper">
-        <div class="chrome-drop drop-1"></div>
-        <div class="chrome-drop drop-2"></div>
-        <div class="chrome-drop drop-3"></div>
-        <div class="chrome-drop drop-4"></div>
-        <div class="chrome-drop drop-5"></div>
-        <div class="chrome-drop drop-6"></div>
-        <div class="chrome-drop drop-7"></div>
-        <div class="chrome-drop drop-8"></div>
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-1" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-2" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-3" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-4" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-5" alt="">
     </div>
 
     <!-- Morphing Nav Structure -->
@@ -587,7 +590,7 @@
                     <input type="color" id="liqColor" class="form-control" value="#222222">
                 </div>
 
-                <div class="form-group"><label><i data-lucide="building-2"></i> Bank / Card Name</label><input type="text" id="liqName" class="form-control" placeholder="e.g. HDFC Bank, SBI Card, Cash" required></div>
+                <div class="form-group"><label><i data-lucide="building-2"></i> Bank / Card Name</label><input type="text" id="liqName" class="form-control" placeholder="e.g. HDFC Bank, SBI Card" required></div>
                 
                 <div class="form-group"><label><i data-lucide="hash"></i> Card / Account Number</label><input type="text" id="liqNumber" class="form-control" placeholder="•••• 1234 (Optional)"></div>
                 <div style="display:flex; gap:10px;">
@@ -636,7 +639,7 @@
                     <input type="color" id="invColor" class="form-control" value="#222222">
                 </div>
 
-                <div class="form-group"><label><i data-lucide="hash"></i> Asset / Fund Name</label><input type="text" id="invName" class="form-control" placeholder="e.g. NIFTYBEES, HDFC Index" required></div>
+                <div class="form-group"><label><i data-lucide="hash"></i> Ticker / Asset Name</label><input type="text" id="invName" class="form-control" placeholder="e.g. ASHOKLEY, BEL" required></div>
                 <div class="form-group">
                     <label><i data-lucide="line-chart"></i> Ticker Symbol (For Live Sync)</label>
                     <input type="text" id="invTicker" class="form-control" placeholder="e.g. RELIANCE.NS, AAPL">
@@ -655,7 +658,24 @@
         </div>
     </div>
 
-    <!-- 4. Contract Modal (Loans & FDs - Upgraded to specific Fields) -->
+    <!-- 4. Snapshot Modal -->
+    <div class="modal-overlay" id="snapshotModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Log Valuation</h3>
+                <button class="close-btn" onclick="closeModal('snapshotModal')"><i data-lucide="x"></i></button>
+            </div>
+            <form id="snapshotForm">
+                <div class="form-group"><label><i data-lucide="folder"></i> Select Holding</label><select id="snapHoldingId" class="form-control" required></select></div>
+                <div class="form-group"><label><i data-lucide="calendar"></i> Date</label><input type="date" id="snapDate" class="form-control" required></div>
+                <div class="form-group"><label><i data-lucide="indian-rupee"></i> New Market Value</label><input type="number" step="0.01" id="snapValue" class="form-control" placeholder="0.00" required></div>
+                <div class="form-group"><label><i data-lucide="arrow-down-to-line"></i> Updated Invested Capital (Optional)</label><input type="number" step="0.01" id="snapInvested" class="form-control" placeholder="Leave empty if unchanged"></div>
+                <button type="submit" class="btn-primary"><i data-lucide="activity"></i> Record Snapshot</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. Contract Modal -->
     <div class="modal-overlay" id="contractModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -704,7 +724,7 @@
         </div>
     </div>
 
-    <!-- 5. Category Modal -->
+    <!-- 6. Category Modal -->
     <div class="modal-overlay" id="catModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -725,7 +745,7 @@
         </div>
     </div>
 
-    <!-- 6. Goal Modal -->
+    <!-- 7. Goal Modal -->
     <div class="modal-overlay" id="goalModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -834,7 +854,7 @@
         }
 
         function loadData() {
-            const stored = localStorage.getItem('aazam_finance_apk_v19');
+            const stored = localStorage.getItem('aazam_finance_apk_v20');
             if (stored) { 
                 state = JSON.parse(stored); 
                 if(state.settings === undefined) state.settings = { animations: true };
@@ -844,7 +864,7 @@
                 state.profiles.personal.categories = [{ id: 'c1', name: 'Salary', type: 'income', limit: 0 }, { id: 'c4', name: 'Food & Dining', type: 'expense', limit: 15000 }, { id: 'c5', name: 'Sneakers & Drip', type: 'expense', limit: 25000 }];
                 state.profiles.personal.accounts = [
                     { id: 'a1', name: 'HDFC Checking', type: 'asset_bank', balance: 150000, accNumber: '1098' }, 
-                    { id: 'a2', name: 'Amazon Pay', type: 'liability_cc', balance: 1968, accNumber: '3009', expiry: '01/29', cvv: '***' },
+                    { id: 'a2', name: 'Amazon Pay Credit Card', type: 'liability_cc', balance: 1968, accNumber: '3009', expiry: '01/29', cvv: '***' },
                     { id: 'a3', name: 'ASHOKLEY', ticker: 'ASHOKLEY.NS', type: 'asset_invest_stock', qty: 100, avgPrice: 52.24, balance: 5072, investedAmount: 5224, history: [{ date: '2026-01-10', value: 5224, invested: 5224 }, { date: today, value: 5072, invested: 5224 }] },
                     { id: 'a4', name: 'BEL', ticker: 'BEL.NS', type: 'asset_invest_stock', qty: 50, avgPrice: 100.72, balance: 4917, investedAmount: 5036, history: [{ date: '2026-02-15', value: 5036, invested: 5036 }, { date: today, value: 4917, invested: 5036 }] }
                 ];
@@ -854,7 +874,7 @@
             saveData();
             applyAnimationState();
         }
-        function saveData() { localStorage.setItem('aazam_finance_apk_v19', JSON.stringify(state)); }
+        function saveData() { localStorage.setItem('aazam_finance_apk_v20', JSON.stringify(state)); }
 
         function toggleAnimation() {
             state.settings.animations = !state.settings.animations;
@@ -1044,6 +1064,7 @@
                 el.style.background = brand.gradient; el.style.color = brand.textColor;
                 el.innerHTML = `
                     <div class="card-action-bar">
+                        <button class="card-action-btn log" onclick="openSnapshotFor('${acc.id}')" title="Log Value"><i data-lucide="activity"></i></button>
                         <button class="card-action-btn edit" onclick="editEntity('invest', '${acc.id}')" title="Edit"><i data-lucide="pencil"></i></button>
                         <button class="card-action-btn del" onclick="deleteAccount('${acc.id}')" title="Delete"><i data-lucide="trash-2"></i></button>
                     </div>
@@ -1112,8 +1133,16 @@
             
             contracts.forEach(acc => {
                 const brand = BrandKit.resolve(acc.name, acc.type, acc.brandSelection, acc.color);
-                const isLoan = acc.type === 'liability_loan', p = acc.balance || 0, maturityAmt = acc.maturityAmt || 0;
-                let maturityDateStr = acc.maturityDate ? new Date(acc.maturityDate).toLocaleDateString('en-IN', { month: 'short', year: '2-digit' }).toUpperCase() : "ONGOING";
+                const isLoan = acc.type === 'liability_loan', p = acc.balance || 0, r = (acc.interestRate || 0) / 100 / 12, n = acc.duration || 0;
+                let emiOrMaturity = 0, maturityDateStr = "ONGOING";
+
+                if (acc.startDate && n > 0) {
+                    let md = new Date(acc.startDate); md.setMonth(md.getMonth() + n);
+                    maturityDateStr = md.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' }).toUpperCase();
+                }
+
+                if (isLoan && p > 0 && n > 0) { emiOrMaturity = (p * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1); } 
+                else if (!isLoan && p > 0 && n > 0) { emiOrMaturity = p * Math.pow(1 + (acc.interestRate/100)/12, n); }
 
                 const mask = acc.accNumber ? `ACC •••• ${acc.accNumber.slice(-4)}` : brand.mask;
 
@@ -1127,20 +1156,20 @@
                     <div class="card-top">
                         <div style="flex:1; overflow:hidden;">
                             <div class="card-brand-title">${brand.brand}</div>
-                            <div class="card-tag">${isLoan ? 'ACTIVE LOAN' : 'FIXED DEPOSIT'}</div>
+                            <div class="card-tag">${isLoan ? 'ACTIVE LOAN / EMI' : 'FIXED DEPOSIT'}</div>
                         </div>
                     </div>
                     <div style="margin-top: 15px;">
                         <div style="font-size: 10px; opacity: 0.8; text-transform: uppercase; font-weight: 700; margin-bottom: 2px;">${isLoan ? 'Remaining Principal' : 'Deposit Principal'}</div>
                         <div class="card-balance">${formatter.format(p)}</div>
-                        <div style="font-size:12px; font-weight:700; opacity:0.9;">${isLoan ? 'Original Loan: ' : 'Maturity Amt: '} ${formatter.format(maturityAmt)}</div>
+                        <div style="font-size:12px; font-weight:700; opacity:0.9;">${isLoan ? 'Monthly EMI: ' + formatter.format(emiOrMaturity) : 'Maturity Amt: ' + formatter.format(emiOrMaturity)}</div>
                     </div>
                     <div class="card-bottom">
                         <div style="display:flex; gap:12px; align-items:center; flex:1; overflow:hidden;">
                             <div class="card-number">${mask}</div>
                             <div class="card-number">ENDS ${maturityDateStr}</div>
                         </div>
-                        <div class="card-network-logo">${isLoan ? 'LOAN' : 'DEPOSIT'}</div>
+                        <div class="card-network-logo">${acc.interestRate}%</div>
                     </div>`;
                 container.appendChild(el);
             });
@@ -1222,8 +1251,9 @@
             else if (id === 'catModal' && !document.getElementById('catEditId').value) { document.getElementById('catForm').reset(); document.getElementById('catModalTitle').innerText = 'Add Category'; document.getElementById('catSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Category'; toggleCatType('expense'); }
             else if (id === 'liquidModal' && !document.getElementById('liqEditId').value) { document.getElementById('liquidForm').reset(); document.getElementById('liqColorGroup').style.display = 'none'; document.getElementById('liqModalTitle').innerText = 'Add Liquid Account'; document.getElementById('liqSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Account'; }
             else if (id === 'investModal' && !document.getElementById('invEditId').value) { document.getElementById('investForm').reset(); document.getElementById('invColorGroup').style.display = 'none'; document.getElementById('invDate').valueAsDate = new Date(); document.getElementById('invModalTitle').innerText = 'Add Investment'; document.getElementById('invSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Holding'; }
-            else if (id === 'contractModal' && !document.getElementById('cntEditId').value) { document.getElementById('contractForm').reset(); document.getElementById('cntColorGroup').style.display = 'none'; document.getElementById('cntMaturityDate').valueAsDate = new Date(); document.getElementById('cntModalTitle').innerText = 'Add Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Contract'; }
+            else if (id === 'contractModal' && !document.getElementById('cntEditId').value) { document.getElementById('contractForm').reset(); document.getElementById('cntColorGroup').style.display = 'none'; document.getElementById('cntDate').valueAsDate = new Date(); document.getElementById('cntModalTitle').innerText = 'Add Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="save"></i> Save Contract'; }
             else if (id === 'goalModal' && !document.getElementById('goalEditId').value) { document.getElementById('goalForm').reset(); document.getElementById('goalModalTitle').innerText = 'New Goal'; document.getElementById('goalSubmitBtn').innerHTML = '<i data-lucide="save"></i> Create Goal'; }
+            else if (id === 'snapshotModal') { populateSnapshotHoldingDropdown(); document.getElementById('snapDate').valueAsDate = new Date(); }
             lucide.createIcons();
         }
 
@@ -1233,6 +1263,13 @@
             if(id==='liquidModal') document.getElementById('liqEditId').value = ''; if(id==='investModal') document.getElementById('invEditId').value = '';
             if(id==='contractModal') document.getElementById('cntEditId').value = ''; if(id==='goalModal') document.getElementById('goalEditId').value = '';
         }
+
+        function populateSnapshotHoldingDropdown() {
+            const dropdown = document.getElementById('snapHoldingId'), invests = db().accounts.filter(a => a.type.startsWith('asset_invest'));
+            dropdown.innerHTML = invests.map(i => `<option value="${i.id}">${i.name} (${i.type.split('_')[2].toUpperCase()})</option>`).join('');
+            if(invests.length > 0) { document.getElementById('snapValue').value = invests[0].balance; document.getElementById('snapInvested').value = invests[0].investedAmount; }
+        }
+        function openSnapshotFor(holdingId) { openModal('snapshotModal'); document.getElementById('snapHoldingId').value = holdingId; const holding = db().accounts.find(a => a.id === holdingId); if(holding) { document.getElementById('snapValue').value = holding.balance; document.getElementById('snapInvested').value = holding.investedAmount; } }
 
         function editEntity(type, id) {
             let entity;
@@ -1248,7 +1285,7 @@
                 document.getElementById('invModalTitle').innerText = 'Edit Investment'; document.getElementById('invSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Holding'; openModal('investModal');
             } else if(type === 'contract') {
                 entity = db().accounts.find(a => a.id === id); if(!entity) return; document.getElementById('cntEditId').value = id;
-                document.getElementById('cntType').value = entity.type; document.getElementById('cntName').value = entity.name; document.getElementById('cntNumber').value = entity.accNumber || ''; document.getElementById('cntPrincipal').value = entity.principal || entity.balance; document.getElementById('cntBalance').value = entity.balance; document.getElementById('cntMaturity').value = entity.maturityAmt || 0; document.getElementById('cntMaturityDate').value = entity.maturityDate || new Date().toISOString().slice(0,10);
+                document.getElementById('cntType').value = entity.type; document.getElementById('cntName').value = entity.name; document.getElementById('cntNumber').value = entity.accNumber || ''; document.getElementById('cntPrincipal').value = entity.principal || entity.balance; document.getElementById('cntBalance').value = entity.balance; document.getElementById('cntRate').value = entity.interestRate; document.getElementById('cntDuration').value = entity.duration; document.getElementById('cntDate').value = entity.startDate || new Date().toISOString().slice(0,10);
                 document.getElementById('cntBrand').value = entity.brandSelection || 'auto'; document.getElementById('cntColor').value = entity.color || '#222222'; document.getElementById('cntColorGroup').style.display = entity.brandSelection === 'custom' ? 'block' : 'none';
                 document.getElementById('cntModalTitle').innerText = 'Edit Contract'; document.getElementById('cntSubmitBtn').innerHTML = '<i data-lucide="refresh-ccw"></i> Update Contract'; openModal('contractModal');
             } else if (type === 'category') {
@@ -1293,16 +1330,18 @@
             saveData(); renderAll(); closeModal('investModal'); 
         });
 
+        document.getElementById('snapshotForm').addEventListener('submit', (e) => { e.preventDefault(); const holdingId = document.getElementById('snapHoldingId').value, date = document.getElementById('snapDate').value, newVal = parseFloat(document.getElementById('snapValue').value), newInvRaw = document.getElementById('snapInvested').value; if(!holdingId || !date || isNaN(newVal)) return; const holding = db().accounts.find(a => a.id === holdingId); if(holding) { const newInv = newInvRaw !== "" ? parseFloat(newInvRaw) : holding.investedAmount; holding.balance = newVal; holding.investedAmount = newInv; if(!holding.history) holding.history = []; holding.history.push({ date: date, value: newVal, invested: newInv }); saveData(); renderAll(); closeModal('snapshotModal'); } });
+        
         document.getElementById('contractForm').addEventListener('submit', (e) => { 
             e.preventDefault(); 
             const id = document.getElementById('cntEditId').value, type = document.getElementById('cntType').value, name = document.getElementById('cntName').value, accNumber = document.getElementById('cntNumber').value;
             const principal = parseFloat(document.getElementById('cntPrincipal').value), balance = parseFloat(document.getElementById('cntBalance').value);
-            const maturityAmt = parseFloat(document.getElementById('cntMaturity').value), maturityDate = document.getElementById('cntMaturityDate').value;
+            const interestRate = parseFloat(document.getElementById('cntRate').value), duration = parseInt(document.getElementById('cntDuration').value), startDate = document.getElementById('cntDate').value;
             const brandSelection = document.getElementById('cntBrand').value, color = document.getElementById('cntColor').value; 
             
             if(!name || isNaN(principal) || isNaN(balance)) return; 
-            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, accNumber, principal, balance, maturityAmt, maturityDate, brandSelection, color }; } 
-            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, principal, balance, maturityAmt, maturityDate, brandSelection, color }); } 
+            if(id) { const idx = db().accounts.findIndex(a => a.id === id); if(idx > -1) db().accounts[idx] = { ...db().accounts[idx], type, name, accNumber, startDate, principal, balance, interestRate, duration, brandSelection, color }; } 
+            else { db().accounts.push({ id: 'a_' + Date.now(), name, type, accNumber, startDate, principal, balance, interestRate, duration, brandSelection, color }); } 
             saveData(); renderAll(); closeModal('contractModal'); 
         });
         
