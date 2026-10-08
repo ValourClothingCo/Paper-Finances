@@ -69,8 +69,10 @@
                 --glass-filter: blur(48px) saturate(180%) brightness(1.2) contrast(1.1);
                 
                 --glass-border: 1px solid rgba(255, 255, 255, 0.12);
-                --glass-highlight: inset 1px 1px 1px rgba(255, 255, 255, 0.15), inset -1px -1px 2px rgba(0,0,0,0.8);
-                --glass-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+                /* Softened highlight mapping to prevent harsh dark edges */
+                --glass-highlight: inset 1px 1px 1px rgba(255, 255, 255, 0.15), inset -1px -1px 2px rgba(0,0,0,0.3);
+                /* Premium subtle depth scaling (replaces harsh clipping shadow) */
+                --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
                 
                 --coin-opacity: 0.85;
                 --coin-shadow: 0 40px 80px rgba(0,0,0,0.8);
@@ -183,12 +185,15 @@
 
         .morph-canvas { position: relative; width: 100%; height: 36px; display: flex; justify-content: center; align-items: center; perspective: 1000px; }
         .morph-content { position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; width: 100%; height: 100%; display: flex; align-items: center; justify-content: space-between; will-change: opacity, transform; backface-visibility: hidden; }
+        
         #logo-wide { justify-content: space-between; }
-        #logo-stacked { justify-content: center; opacity: 0; transform: scale(0.75); }
+        
+        #logo-stacked { justify-content: center; opacity: 0; transform: scale(0.75); pointer-events: none; }
+        
         .nav-favicon { width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
         .nav-favicon-wide { width: 32px; height: 32px; object-fit: contain; margin-right: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
-        .nav-links { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; align-items: center; }
+        .nav-links { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; align-items: center; padding: 0 10px; }
         .nav-links::-webkit-scrollbar { display: none; }
         .nav-links a { display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 13px; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
         .nav-links a:hover, .nav-links a.active { color: var(--sec-1); }
@@ -252,14 +257,17 @@
 
         /* --- SLEEK HORIZONTAL FINTECH CARD CAROUSEL --- */
         .card-carousel {
-            display: flex; gap: 16px; overflow-x: auto; padding: 6px 4px 24px 4px;
+            display: flex; gap: 16px; overflow-x: auto; 
+            /* Expanded bottom padding to accommodate full shadow blur without clipping */
+            padding: 10px 8px 50px 8px; 
+            margin: 0px -8px -20px -8px; /* Counter margin to keep the grid aligned */
             scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
         .card-carousel::-webkit-scrollbar { display: none; }
 
         .fintech-card {
             min-width: 270px; max-width: 320px; min-height: 200px; border-radius: 22px; padding: 22px;
-            scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 15px;
+            scroll-snap-align: center; position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 15px;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none; overflow: hidden;
             
@@ -432,7 +440,7 @@
         <img src="https://cdn.shopify.com/s/files/1/0753/3681/0771/files/Valour_Coin_HDR-1.png?v=1790922660" class="valour-coin coin-5" alt="">
     </div>
 
-    <!-- Morphing Nav Structure (Scroll-To-Top Event Added) -->
+    <!-- Morphing Nav Structure -->
     <nav class="b2b-pill-base" id="topNav">
         <div class="morph-canvas">
             <div id="logo-wide" class="morph-content">
@@ -929,7 +937,11 @@
                 
                 morphPill.style.width = Math.round((maxW - ((maxW - minW) * easedRatio)) / 2) * 2 + 'px';
                 logoWide.style.opacity = Math.max(1 - (easedRatio * 1.8), 0); logoWide.style.transform = `scale(${1 - (easedRatio * 0.15)}) translateZ(0)`; logoWide.style.pointerEvents = easedRatio > 0.5 ? 'none' : 'auto';
-                logoStacked.style.opacity = Math.max((easedRatio - 0.2) * 1.5, 0); logoStacked.style.transform = `scale(${0.75 + (easedRatio * 0.25)}) translateZ(0)`;
+                
+                logoStacked.style.opacity = Math.max((easedRatio - 0.2) * 1.5, 0); 
+                logoStacked.style.transform = `scale(${0.75 + (easedRatio * 0.25)}) translateZ(0)`;
+                // Fixes mobile nav bar blocking touch scrolling issue
+                logoStacked.style.pointerEvents = easedRatio > 0.5 ? 'auto' : 'none';
             }
             window.addEventListener('scroll', updateTargetScroll, { passive: true });
             window.addEventListener('resize', updateTargetScroll, { passive: true });
@@ -1570,7 +1582,6 @@
             saveData(); renderAll(); closeModal('contractModal'); 
         });
         
-        // Strict Account Filtering for Standard Transactions
         function toggleTxType(type) { 
             document.querySelectorAll('#txModal .type-btn').forEach(b => b.classList.remove('active')); 
             document.querySelector(`#txModal .type-btn[data-type="${type}"]`).classList.add('active'); 
@@ -1602,7 +1613,7 @@
             } 
         }
 
-        // Restricts standard transaction dropdowns to liquid accounts only
+        // Restricts standard transaction dropdowns to liquid accounts only (removes investments & FDs)
         function populateAccountSelect(elementId) { 
             const select = document.getElementById(elementId); 
             select.innerHTML = ''; 
